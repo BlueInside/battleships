@@ -7,7 +7,7 @@ const Ship = (length) => {
 
   const isSunk = () => (getHits() === length ? true : false);
 
-  return { length, hit, getHits, isSunk };
+  return { hit, getHits, isSunk };
 };
 
 module.exports = Ship;
