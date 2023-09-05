@@ -1,1 +1,5 @@
-const Ship = (length) => {};
+const Ship = (length) => {
+  return { length };
+};
+
+module.exports = Ship;
