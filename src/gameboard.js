@@ -1,7 +1,7 @@
 const Ship = require('../src/ship.js');
 const Gameboard = () => {
   let board;
-
+  let hitRecords = [];
   const createBoard = (size) => {
     board = Array(size)
       .fill(null)
@@ -12,7 +12,7 @@ const Gameboard = () => {
 
   const placeShip = (shipLength, startX, startY, direction) => {
     const ship = Ship(shipLength);
-
+    if (!direction) throw new Error('direction must be provided');
     if (direction === 'horizontal') {
       if (startX + shipLength > board.length)
         throw new Error('Ship must be placed within board');
@@ -23,14 +23,23 @@ const Gameboard = () => {
     if (direction === 'vertical') {
       if (startY + shipLength > board.length)
         throw new Error('Ship must be placed within board');
-      console.log('hello');
+
       for (let y = startY; y < startY + shipLength; y++) {
         board[y][startX] = ship;
       }
     }
   };
 
-  return { createBoard, getBoard, placeShip };
+  const getHitRecords = () => hitRecords;
+  const receiveAttack = (cordX, cordY) => {
+    const targetedCell = board[cordY][cordX];
+    if (targetedCell === null) {
+      hitRecords.push([cordX, cordY]);
+    } else if (targetedCell.isShip) {
+      targetedCell.hit();
+    }
+  };
+  return { createBoard, getBoard, placeShip, getHitRecords, receiveAttack };
 };
 
 module.exports = Gameboard;
