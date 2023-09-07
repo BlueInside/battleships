@@ -41,8 +41,13 @@ gameboard.createBoard(6);
 gameboard.placeShip(2, 0, 1, 'vertical');
 const board = gameboard.getBoard();
 
-for (let index = 0; index < board.length; index++) {
-  console.log(board[index].filter((cell) => cell !== null));
-}
-
+const shootRecords = [];
+shootRecords.push([2, 4]);
+shootRecords.push([4, 4]);
+console.log(
+  shootRecords.filter((record) => {
+    if (record[0] === 2 && record[1] == 4) return true;
+    else return false;
+  })
+);
 module.exports = Gameboard;
