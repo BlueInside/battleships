@@ -26,11 +26,11 @@ describe('testing player factoryFunction', () => {
     expect(player1.getHitRecords().length).toBe(1);
 
     //check if shots match
-    expect(containsArray(player1.getHitRecords, [4, 5])).toBe(true);
-    expect(containsArray(player2.getHitRecords, [3, 3])).toBe(true);
+    expect(containsArray(player1.getHitRecords(), [4, 5])).toBe(true);
+    expect(containsArray(player2.getHitRecords(), [3, 3])).toBe(true);
     // check with false values
-    expect(containsArray(player1.getHitRecords, [5, 4])).toBe(false);
-    expect(containsArray(player2.getHitRecords, [2, 3])).toBe(false);
+    expect(containsArray(player1.getHitRecords(), [5, 4])).toBe(false);
+    expect(containsArray(player2.getHitRecords(), [2, 3])).toBe(false);
 
     // const player1Board = player1.getBoard();
     // const player1Ship = player1Board[3][7];
