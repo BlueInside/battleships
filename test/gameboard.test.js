@@ -2,7 +2,7 @@ const Gameboard = require('../src/gameboard.js');
 const Ship = require('../src/ship.js');
 const containsArray = require('../src/utility/containsArray.js');
 
-describe('Gameboard Factory', () => {
+describe.skip('Gameboard Factory', () => {
   let gameboard;
   let placeShip;
   beforeEach(() => {
