@@ -27,6 +27,7 @@ const Ship = (length) => {
 const Gameboard = () => {
   let board;
   let hitRecords = [];
+  let shipsOnBoard = [];
   const createBoard = (size) => {
     board = Array(size)
       .fill(null)
@@ -34,18 +35,24 @@ const Gameboard = () => {
   };
   const getBoard = () => board;
   const placeShip = (shipLength, startX, startY, direction) => {
+    if (!direction) throw new Error('direction must be provided');
     const ship = Ship(shipLength);
     if (direction === 'horizontal') {
+      if (startX + shipLength > board.length)
+        throw new Error('Ship must be placed within board');
       for (let x = startX; x < startX + shipLength; x++) {
         board[startY][x] = ship;
       }
     }
     if (direction === 'vertical') {
-      console.log('hello');
+      if (startY + shipLength > board.length)
+        throw new Error('Ship must be placed within board');
+
       for (let y = startY; y < startY + shipLength; y++) {
         board[y][startX] = ship;
       }
     }
+    shipsOnBoard.push(ship);
   };
   const getHitRecords = () => hitRecords;
   const receiveAttack = (cordX, cordY) => {
@@ -58,17 +65,30 @@ const Gameboard = () => {
     }
   };
 
-  const gameover = () => {};
-  return { createBoard, getBoard, placeShip, getHitRecords, receiveAttack };
+  const gameOver = () => {
+    let sunkShips = 0;
+    console.log(shipsOnBoard.length, sunkShips);
+    shipsOnBoard.forEach((ship) => {
+      console.log(ship.isSunk());
+      if (ship.isSunk()) sunkShips += 1;
+    });
+    if (sunkShips === shipsOnBoard.length) return true;
+    else return false;
+  };
+  return {
+    createBoard,
+    getBoard,
+    placeShip,
+    getHitRecords,
+    receiveAttack,
+    gameOver,
+  };
 };
 
 const gameboard = Gameboard();
 gameboard.createBoard(8);
-gameboard.placeShip(4, 3, 3, 'vertical');
-const board = gameboard.getBoard();
-const ship = board[4][3];
-console.log(ship);
-console.log(ship.getHits());
-gameboard.receiveAttack(3, 4);
-console.log(ship.getHits());
+gameboard.placeShip(1, 3, 3, 'vertical');
+console.log(gameboard.gameOver());
+gameboard.receiveAttack(3, 3);
+console.log(gameboard.gameOver());
 module.exports = Gameboard;
