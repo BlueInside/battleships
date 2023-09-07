@@ -1,5 +1,7 @@
 const Gameboard = require('../src/gameboard.js');
 const Ship = require('../src/ship.js');
+const containsArray = require('../src/utility/containsArray.js');
+
 describe('Gameboard Factory', () => {
   let gameboard;
   let placeShip;
@@ -43,9 +45,19 @@ describe('Gameboard Factory', () => {
     expect(() => placeShip(10, 0, 0, 'horizontal')).toThrow();
   });
 
-  test('receiveAttack determines if attack hit the ship', () => {
-    placeShip(4, 3, 3);
+  test('receiveAttack stores hit records correctly', () => {
+    placeShip(4, 3, 3, 'vertical');
     gameboard.receiveAttack(2, 4);
-    gameboard.shootRecords;
+    expect(containsArray(gameboard.getHitRecords(), [2, 4])).toBe(true);
+  });
+
+  test('Calls ship hit() if ship was on attack cord', () => {
+    placeShip(4, 3, 3, 'vertical');
+    const board = gameboard.getBoard();
+    const ship = board[5][3];
+    expect(ship.isShip).toBe(true);
+    expect(ship.getHits()).toBe(0);
+    gameboard.receiveAttack(3, 4);
+    expect(ship.getHits()).toBe(1);
   });
 });
