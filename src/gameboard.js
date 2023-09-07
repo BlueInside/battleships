@@ -4,11 +4,11 @@ const Gameboard = () => {
   let board;
   let hitRecords = [];
   let shipsOnBoard = [];
-  const createBoard = (size) => {
+  const createBoard = ((size) => {
     board = Array(size)
       .fill(null)
       .map((x) => Array(size).fill(null));
-  };
+  })(8);
 
   const getBoard = () => board;
 
