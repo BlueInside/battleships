@@ -13,7 +13,7 @@ describe('testing player factoryFunction', () => {
     expect(player2).toBeDefined();
   });
 
-  test('players can attack each other game boards', () => {
+  test('players can attack each other game boards miss shots', () => {
     player1.placeShip(4, 7, 3, 'vertical');
     player2.placeShip(4, 2, 1, 'horizontal');
 
@@ -31,10 +31,23 @@ describe('testing player factoryFunction', () => {
     // check with false values
     expect(containsArray(player1.getHitRecords(), [5, 4])).toBe(false);
     expect(containsArray(player2.getHitRecords(), [2, 3])).toBe(false);
+  });
 
-    // const player1Board = player1.getBoard();
-    // const player1Ship = player1Board[3][7];
-    // const player2Board = player2.getBoard();
-    // const player2Ship = player2Board[1][2];
+  test('players can attack each other game boards hits', () => {
+    player1.placeShip(4, 7, 3, 'vertical');
+    player2.placeShip(4, 2, 1, 'horizontal');
+
+    //accurate hits
+    const player1Ship = player1.getBoard()[3][7];
+    const player2Ship = player2.getBoard()[1][2];
+
+    expect(player1Ship.getHits()).toBe(0);
+    expect(player2Ship.getHits()).toBe(0);
+
+    player1.shoot(2, 1, player2);
+    expect(player2Ship.getHits()).toBe(1);
+
+    player2.shoot(7, 3, player1);
+    expect(player1Ship.getHits()).toBe(1);
   });
 });

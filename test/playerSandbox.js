@@ -91,36 +91,31 @@ const Player = () => {
   const shoot = (cordX, cordY, enemyPlayer) => {
     enemyPlayer.receiveAttack(cordX, cordY);
   };
-  const { placeShip, getHitRecords, receiveAttack } = gameboard;
-  return { placeShip, getHitRecords, receiveAttack, shoot };
+  const { placeShip, getHitRecords, receiveAttack, getBoard } = gameboard;
+  return { placeShip, getHitRecords, receiveAttack, shoot, getBoard };
 };
 
 const player1 = Player();
 const player2 = Player();
-//miss shoots
 
-console.log(player2.getHitRecords().length);
-player2.getHitRecords().length;
-player1.shoot(3, 3, player2);
+player1.placeShip(4, 7, 3, 'vertical');
+player2.placeShip(4, 2, 1, 'horizontal');
 
-console.log(player2.getHitRecords().length, player1.getHitRecords().length);
-player2.getHitRecords().length;
-player1.getHitRecords().length;
-player2.shoot(4, 5, player1);
+//accurate hits
+const player1Ship = player1.getBoard()[3][7];
+const player2Ship = player2.getBoard()[1][2];
 
-console.log(player1.getHitRecords().length);
-player1.getHitRecords().length;
-//check if shots match
-console.log(
-  containsArray(player1.getHitRecords(), [4, 5]),
-  containsArray(player2.getHitRecords(), [3, 3])
-);
-containsArray(player1.getHitRecords(), [4, 5]);
-containsArray(player2.getHitRecords(), [3, 3]);
-// check with false values
-console.log(
-  containsArray(player1.getHitRecords(), [5, 4]),
-  containsArray(player2.getHitRecords(), [2, 3])
-);
-containsArray(player1.getHitRecords(), [5, 4]);
-containsArray(player2.getHitRecords(), [2, 3]);
+console.log(player1Ship, player2Ship);
+console.log(player1Ship.getHits(), player2Ship.getHits());
+player1Ship.getHits();
+console.log(player1Ship.getHits(), player2Ship.getHits());
+player2Ship.getHits();
+console.log(player1Ship.getHits(), player2Ship.getHits());
+
+player1.shoot(2, 1, player2);
+console.log(player2Ship.getHits());
+player2Ship.getHits();
+
+player2.shoot(7, 3, player1);
+console.log(player1Ship.getHits());
+player1Ship.getHits();
