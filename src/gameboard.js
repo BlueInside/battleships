@@ -1,7 +1,9 @@
 const Ship = require('../src/ship.js');
+
 const Gameboard = () => {
   let board;
   let hitRecords = [];
+  let shipsOnBoard = [];
   const createBoard = (size) => {
     board = Array(size)
       .fill(null)
@@ -28,6 +30,7 @@ const Gameboard = () => {
         board[y][startX] = ship;
       }
     }
+    shipsOnBoard.push(ship);
   };
 
   const getHitRecords = () => hitRecords;
@@ -39,7 +42,24 @@ const Gameboard = () => {
       targetedCell.hit();
     }
   };
-  return { createBoard, getBoard, placeShip, getHitRecords, receiveAttack };
+
+  const gameOver = () => {
+    let sunkShips = 0;
+    shipsOnBoard.forEach((ship) => {
+      if (ship.isSunk()) sunkShips += 1;
+    });
+    if (sunkShips === shipsOnBoard.length) return true;
+    else return false;
+  };
+
+  return {
+    createBoard,
+    getBoard,
+    placeShip,
+    getHitRecords,
+    receiveAttack,
+    gameOver,
+  };
 };
 
 module.exports = Gameboard;
