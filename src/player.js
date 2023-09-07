@@ -1,3 +1,5 @@
-const player = () => {};
+const Player = () => {
+  return {};
+};
 
-module.exports = player;
+module.exports = Player;
