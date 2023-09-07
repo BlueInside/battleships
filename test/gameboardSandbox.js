@@ -57,6 +57,8 @@ const Gameboard = () => {
       targetedCell.hit();
     }
   };
+
+  const gameover = () => {};
   return { createBoard, getBoard, placeShip, getHitRecords, receiveAttack };
 };
 

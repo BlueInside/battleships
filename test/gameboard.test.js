@@ -60,4 +60,11 @@ describe('Gameboard Factory', () => {
     gameboard.receiveAttack(3, 4);
     expect(ship.getHits()).toBe(1);
   });
+
+  test('Gameboard checks if all the ships are sunk', () => {
+    placeShip(1, 3, 3, 'horizontal');
+    expect(gameboard.gameover()).toBe(false);
+    gameboard.receiveAttack(3, 3);
+    expect(gameboard.gameover()).toBe(true);
+  });
 });
