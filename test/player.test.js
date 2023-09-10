@@ -50,4 +50,9 @@ describe('testing player factoryFunction', () => {
     player2.shoot(7, 3, player1);
     expect(player1Ship.getHits()).toBe(1);
   });
+
+  test('Computer checks if given move is legal', () => {
+    player1.shoot(3, 3, player2);
+    expect(player1.isLegal(3, 3, player2)).toBe(false);
+  });
 });
