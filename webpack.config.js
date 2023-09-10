@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -36,4 +37,10 @@ module.exports = {
       '\\.(css|less)$': path.resolve(__dirname, '__mocks__/styleMock.js'),
     },
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'public/index.html', // Path to your index.html
+    }),
+  ],
 };
