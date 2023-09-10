@@ -20,8 +20,17 @@ const Player = () => {
     else cpuMove(enemy);
   };
 
-  const { placeShip, getHitRecords, receiveAttack, getBoard } = gameboard;
-  return { placeShip, getHitRecords, receiveAttack, shoot, getBoard, cpuMove };
+  const { placeShip, getHitRecords, receiveAttack, getBoard, gameOver } =
+    gameboard;
+  return {
+    placeShip,
+    getHitRecords,
+    receiveAttack,
+    shoot,
+    getBoard,
+    cpuMove,
+    gameOver,
+  };
 };
 
 module.exports = Player;
