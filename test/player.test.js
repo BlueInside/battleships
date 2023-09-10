@@ -51,8 +51,19 @@ describe('testing player factoryFunction', () => {
     expect(player1Ship.getHits()).toBe(1);
   });
 
-  test('Computer checks if given move is legal', () => {
-    player1.shoot(3, 3, player2);
-    expect(player1.isLegal(3, 3, player2)).toBe(false);
+  test('computer makes random moves', () => {
+    expect(player2.getHitRecords().length).toBe(0);
+    player1.cpuMove(player2);
+    expect(player2.getHitRecords().length).toBe(1);
+    player1.cpuMove(player2);
+    expect(player2.getHitRecords().length).toBe(2);
+    player1.cpuMove(player2);
+    player1.cpuMove(player2);
+    player1.cpuMove(player2);
+    expect(player2.getHitRecords().length).toBe(5);
+    for (let index = 0; index < 59; index++) {
+      player1.cpuMove(player2);
+    }
+    expect(player2.getHitRecords().length).toBe(64);
   });
 });
