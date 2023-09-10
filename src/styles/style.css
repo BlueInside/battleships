@@ -2,3 +2,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #6b6565;
 }
+#display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+}
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+}
