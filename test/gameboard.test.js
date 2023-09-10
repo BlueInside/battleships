@@ -2,12 +2,11 @@ const Gameboard = require('../src/gameboard.js');
 const Ship = require('../src/ship.js');
 const containsArray = require('../src/utility/containsArray.js');
 
-describe.skip('Gameboard Factory', () => {
+describe('Gameboard Factory', () => {
   let gameboard;
   let placeShip;
   beforeEach(() => {
     gameboard = Gameboard();
-    gameboard.createBoard(8);
     placeShip = gameboard.placeShip;
   });
 
@@ -16,11 +15,10 @@ describe.skip('Gameboard Factory', () => {
   });
 
   test('create board with specific size and cells that are null', () => {
-    gameboard.createBoard(4);
     const board = gameboard.getBoard();
-    expect(board.length).toBe(4);
+    expect(board.length).toBe(8);
     board.forEach((row) => {
-      expect(row.length).toBe(4);
+      expect(row.length).toBe(8);
       row.forEach((cell) => expect(cell).toBe(null));
     });
   });
@@ -66,5 +64,19 @@ describe.skip('Gameboard Factory', () => {
     expect(gameboard.gameOver()).toBe(false);
     gameboard.receiveAttack(3, 3);
     expect(gameboard.gameOver()).toBe(true);
+  });
+
+  test(`Gameboard doesn't sink a ship when same cell was triggered`, () => {
+    placeShip(4, 3, 3, 'horizontal');
+    const board = gameboard.getBoard();
+    const ship = board[3][3];
+    expect(gameboard.gameOver()).toBe(false);
+    gameboard.receiveAttack(3, 3);
+    expect(ship.getHits()).toBe(1);
+    gameboard.receiveAttack(3, 3);
+    gameboard.receiveAttack(3, 3);
+    expect(ship.isSunk()).toBe(false);
+    expect(ship.getHits()).toBe(1);
+    expect(gameboard.gameOver()).toBe(false);
   });
 });
