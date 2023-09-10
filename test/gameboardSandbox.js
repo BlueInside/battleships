@@ -58,17 +58,22 @@ const Gameboard = () => {
   const getHitRecords = () => missedHits;
   const receiveAttack = (cordX, cordY) => {
     const targetedCell = board[cordY][cordX];
-    console.log(board[cordY][cordX]);
-    if (targetedCell === null) {
+    // do nothing when same cell is being shoot twice
+    if (
+      containsArray(missedHits, [cordX, cordY]) ||
+      containsArray(accurateHits, [cordX, cordY])
+    ) {
+      return;
+    } else if (targetedCell === null) {
       missedHits.push([cordX, cordY]);
     } else if (targetedCell.isShip) {
       targetedCell.hit();
+      accurateHits.push([cordX, cordY]);
     }
   };
 
   const gameOver = () => {
     let sunkShips = 0;
-    console.log(shipsOnBoard.length, sunkShips);
     shipsOnBoard.forEach((ship) => {
       console.log(ship.isSunk());
       if (ship.isSunk()) sunkShips += 1;
