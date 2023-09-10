@@ -1,3 +1,5 @@
 import './styles/style.css';
-
-console.log('yups');
+const Player = require('./player.js');
+const player1 = Player();
+const player2 = Player();
+const display = document.getElementById('display');
