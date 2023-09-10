@@ -1,7 +1,7 @@
 const Player = require('../src/player.js');
 const containsArray = require('../src/utility/containsArray.js');
 
-describe.skip('testing player factoryFunction', () => {
+describe('testing player factoryFunction', () => {
   let player1;
   let player2;
   beforeEach(() => {

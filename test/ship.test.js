@@ -1,6 +1,6 @@
 const Ship = require('../src/ship.js');
 
-describe.skip('Ship Factory', () => {
+describe('Ship Factory', () => {
   let ship;
 
   beforeEach(() => {
