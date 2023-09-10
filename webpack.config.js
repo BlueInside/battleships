@@ -9,7 +9,8 @@ module.exports = {
   },
   mode: 'development',
   devServer: {
-    static: './dist',
+    static: path.join(__dirname, 'dist'), // This should point to your built assets (where webpack outputs the bundled files)
+    open: true, // Open the default browser when starting the server
   },
   module: {
     rules: [
