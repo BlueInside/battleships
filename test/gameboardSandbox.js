@@ -26,13 +26,14 @@ const Ship = (length) => {
 
 const Gameboard = () => {
   let board;
-  let hitRecords = [];
+  let missedHits = [];
   let shipsOnBoard = [];
-  const createBoard = (size) => {
+  let accurateHits = [];
+  const createBoard = ((size) => {
     board = Array(size)
       .fill(null)
       .map((x) => Array(size).fill(null));
-  };
+  })(8);
   const getBoard = () => board;
   const placeShip = (shipLength, startX, startY, direction) => {
     if (!direction) throw new Error('direction must be provided');
@@ -54,12 +55,12 @@ const Gameboard = () => {
     }
     shipsOnBoard.push(ship);
   };
-  const getHitRecords = () => hitRecords;
+  const getHitRecords = () => missedHits;
   const receiveAttack = (cordX, cordY) => {
     const targetedCell = board[cordY][cordX];
     console.log(board[cordY][cordX]);
     if (targetedCell === null) {
-      hitRecords.push([cordX, cordY]);
+      missedHits.push([cordX, cordY]);
     } else if (targetedCell.isShip) {
       targetedCell.hit();
     }
@@ -86,9 +87,19 @@ const Gameboard = () => {
 };
 
 const gameboard = Gameboard();
-gameboard.createBoard(8);
-gameboard.placeShip(1, 3, 3, 'vertical');
+gameboard.placeShip(3, 3, 3, 'vertical');
+const board = gameboard.getBoard();
+const ship = board[3][3];
+
 console.log(gameboard.gameOver());
+console.log(ship.getHits());
+
 gameboard.receiveAttack(3, 3);
-console.log(gameboard.gameOver());
-module.exports = Gameboard;
+console.log(ship.isSunk());
+console.log(ship.getHits());
+
+gameboard.receiveAttack(3, 3);
+gameboard.receiveAttack(3, 3);
+console.log(ship.getHits());
+console.log(ship.isSunk());
+console.log(gameboard.getHitRecords());
