@@ -1,8 +1,9 @@
 const Ship = require('../src/ship.js');
-
+const containsArray = require('../src/utility/containsArray.js');
 const Gameboard = () => {
   let board;
-  let hitRecords = [];
+  let missedHits = [];
+  let accurateHits = [];
   let shipsOnBoard = [];
   const createBoard = ((size) => {
     board = Array(size)
@@ -33,13 +34,20 @@ const Gameboard = () => {
     shipsOnBoard.push(ship);
   };
 
-  const getHitRecords = () => hitRecords;
+  const getHitRecords = () => missedHits;
   const receiveAttack = (cordX, cordY) => {
     const targetedCell = board[cordY][cordX];
-    if (targetedCell === null) {
-      hitRecords.push([cordX, cordY]);
+    // do nothing when same cell is being shoot twice
+    if (
+      containsArray(missedHits, [cordX, cordY]) ||
+      containsArray(accurateHits, [cordX, cordY])
+    ) {
+      return;
+    } else if (targetedCell === null) {
+      missedHits.push([cordX, cordY]);
     } else if (targetedCell.isShip) {
       targetedCell.hit();
+      accurateHits.push([cordX, cordY]);
     }
   };
 
