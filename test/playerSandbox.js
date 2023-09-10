@@ -88,34 +88,40 @@ const containsArray = (matrix, targetArray) => {
 const Player = () => {
   let gameboard = Gameboard();
 
-  const shoot = (cordX, cordY, enemyPlayer) => {
-    enemyPlayer.receiveAttack(cordX, cordY);
+  const shoot = (cordX, cordY, enemy) => {
+    enemy.receiveAttack(cordX, cordY);
   };
+
+  const isLegal = (cordX, cordY, enemy) => {
+    const enemyHitRecords = enemy.getHitRecords();
+    const isLegal = !containsArray(enemyHitRecords, [cordX, cordY]);
+    return isLegal;
+  };
+
+  const cpuMove = (enemy) => {
+    let cordX = Math.floor(Math.random() * 8);
+    let cordY = Math.floor(Math.random() * 8);
+    if (isLegal(cordX, cordY, enemy)) shoot(cordX, cordY, enemy);
+    else cpuMove(enemy);
+  };
+
   const { placeShip, getHitRecords, receiveAttack, getBoard } = gameboard;
-  return { placeShip, getHitRecords, receiveAttack, shoot, getBoard };
+  return { placeShip, getHitRecords, receiveAttack, shoot, getBoard, cpuMove };
 };
 
 const player1 = Player();
 const player2 = Player();
-
-player1.placeShip(4, 7, 3, 'vertical');
-player2.placeShip(4, 2, 1, 'horizontal');
-
-//accurate hits
-const player1Ship = player1.getBoard()[3][7];
-const player2Ship = player2.getBoard()[1][2];
-
-console.log(player1Ship, player2Ship);
-console.log(player1Ship.getHits(), player2Ship.getHits());
-player1Ship.getHits();
-console.log(player1Ship.getHits(), player2Ship.getHits());
-player2Ship.getHits();
-console.log(player1Ship.getHits(), player2Ship.getHits());
-
-player1.shoot(2, 1, player2);
-console.log(player2Ship.getHits());
-player2Ship.getHits();
-
-player2.shoot(7, 3, player1);
-console.log(player1Ship.getHits());
-player1Ship.getHits();
+const shootRecords = player2.getHitRecords();
+player2.getHitRecords().length;
+player1.cpuMove(player2);
+console.log(player2.getHitRecords().length);
+player1.cpuMove(player2);
+console.log(player2.getHitRecords().length);
+player1.cpuMove(player2);
+player1.cpuMove(player2);
+player1.cpuMove(player2);
+for (let index = 0; index < 59; index++) {
+  player1.cpuMove(player2);
+}
+console.log(player2.getHitRecords().length);
+console.log(player2.getHitRecords());
