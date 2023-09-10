@@ -9,7 +9,7 @@ const Gameboard = () => {
     board = Array(size)
       .fill(null)
       .map((x) => Array(size).fill(null));
-  })(8);
+  })(10);
 
   const getBoard = () => board;
 
@@ -61,7 +61,6 @@ const Gameboard = () => {
   };
 
   return {
-    createBoard,
     getBoard,
     placeShip,
     getHitRecords,

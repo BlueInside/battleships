@@ -16,9 +16,9 @@ describe('Gameboard Factory', () => {
 
   test('create board with specific size and cells that are null', () => {
     const board = gameboard.getBoard();
-    expect(board.length).toBe(8);
+    expect(board.length).toBe(10);
     board.forEach((row) => {
-      expect(row.length).toBe(8);
+      expect(row.length).toBe(10);
       row.forEach((cell) => expect(cell).toBe(null));
     });
   });
@@ -40,7 +40,7 @@ describe('Gameboard Factory', () => {
   });
 
   test(`Don't place ship if it's out of array bonds`, () => {
-    expect(() => placeShip(10, 0, 0, 'horizontal')).toThrow();
+    expect(() => placeShip(11, 0, 0, 'horizontal')).toThrow();
   });
 
   test('receiveAttack stores hit records correctly', () => {
