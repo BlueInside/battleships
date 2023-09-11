@@ -20,8 +20,14 @@ const Player = () => {
     else cpuMove(enemy);
   };
 
-  const { placeShip, getHitRecords, receiveAttack, getBoard, gameOver } =
-    gameboard;
+  const {
+    placeShip,
+    getHitRecords,
+    receiveAttack,
+    getBoard,
+    gameOver,
+    getSuccessfulHits,
+  } = gameboard;
   return {
     placeShip,
     getHitRecords,
@@ -30,6 +36,7 @@ const Player = () => {
     getBoard,
     cpuMove,
     gameOver,
+    getSuccessfulHits,
   };
 };
 
