@@ -51,6 +51,9 @@ const Gameboard = () => {
     }
   };
 
+  const getShipsOnBoard = () => shipsOnBoard;
+  const getSuccessfulHits = () => accurateHits;
+
   const gameOver = () => {
     let sunkShips = 0;
     shipsOnBoard.forEach((ship) => {
@@ -66,6 +69,8 @@ const Gameboard = () => {
     getHitRecords,
     receiveAttack,
     gameOver,
+    getShipsOnBoard,
+    getSuccessfulHits,
   };
 };
 
