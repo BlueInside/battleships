@@ -30,7 +30,7 @@ function renderPlayerBoards(player1, player2) {
   let displayShips = true;
   player1BoardElement.appendChild(generateBoardHTML(player1, displayShips));
   player2BoardElement.appendChild(
-    generateBoardHTML(player2, (displayShips = false))
+    generateBoardHTML(player2, (displayShips = true))
   );
 }
 function generateBoardHTML(player, displayShips) {
