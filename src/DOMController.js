@@ -30,7 +30,7 @@ function renderPlayerBoards(player1, player2) {
   let displayShips = true;
   player1BoardElement.appendChild(generateBoardHTML(player1, displayShips));
   player2BoardElement.appendChild(
-    generateBoardHTML(player2, (displayShips = true))
+    generateBoardHTML(player2, (displayShips = false))
   );
 }
 function generateBoardHTML(player, displayShips) {
@@ -62,8 +62,12 @@ function generateBoardHTML(player, displayShips) {
       else if (isSuccessful) cellHTML.classList.add('hit');
       cellHTML.classList.add('cell');
 
+      // Add cords X and Y as dataset;
+      cellHTML.dataset.cordX = col;
+      cellHTML.dataset.cordY = row;
+
       // Set the cell text content to
-      cellHTML.innerText = 'X';
+      cellHTML.innerText = '/';
 
       // Append the cell to the current row
       rowHTML.appendChild(cellHTML);
@@ -72,9 +76,25 @@ function generateBoardHTML(player, displayShips) {
     // Append the current row to the gameboard
     gameboard.appendChild(rowHTML);
   }
-
   // Return the gameboard containing all rows and cells
   return gameboard;
 }
 
-module.exports = { initializeGame, renderPlayerBoards };
+// Add event listeners on enemy gameboard cells
+function addEnemyGameboardListeners(player1, player2) {
+  const cpuCells = document.querySelectorAll('#player2-board-display .cell');
+  cpuCells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+      const cordX = Number(cell.dataset.cordX);
+      const cordY = Number(cell.dataset.cordY);
+      const shootEvent = new CustomEvent('shoot', { detail: { cordX, cordY } });
+      document.dispatchEvent(shootEvent);
+    });
+  });
+}
+
+module.exports = {
+  initializeGame,
+  renderPlayerBoards,
+  addEnemyGameboardListeners,
+};
