@@ -1,3 +1,5 @@
+const containsArray = require('./utility/containsArray');
+
 function initializeGame(player1, player2) {
   // Place ships for player1 and player2
   player1.placeShip(5, 5, 1, 'vertical');
@@ -21,47 +23,39 @@ function renderPlayerBoards(player1, player2) {
 
   player1BoardElement.innerText = '';
   player2BoardElement.innerText = '';
-  player1BoardElement.appendChild(generatePlayerBoardHTML(player1));
-  player2BoardElement.appendChild(generateCPUBoardHTML(player2));
+
+  let displayShips = true;
+  player1BoardElement.appendChild(generateBoardHTML(player1, displayShips));
+  player2BoardElement.appendChild(
+    generateBoardHTML(player2, (displayShips = false))
+  );
 }
-function generatePlayerBoardHTML(player) {
+function generateBoardHTML(player, displayShips) {
   const board = player.getBoard();
+  const missedHits = player.getHitRecords();
+  const successfulHits = player.getSuccessfulHits();
   const gameboard = document.createElement('div');
   gameboard.classList.add('playerBoard');
   for (let row = 0; row < board.length; row++) {
     const divRow = document.createElement('div');
     divRow.classList.add('row');
     for (let col = 0; col < board[row].length; col++) {
+      const currentCell = board[row][col];
+      const isShip = currentCell && displayShips ? true : false;
+      const isMissed = containsArray(missedHits, [row, col]);
+      const isSuccessful = containsArray(successfulHits, [row, col]);
       // Create each cell content
       const cell = document.createElement('div');
-      cell.textContent = `P`;
+      if (isShip) cell.classList.add('ship');
+      else if (isMissed) cell.classList.add('miss');
+      else if (isSuccessful) cell.classList.add('hit');
       cell.classList.add('cell');
+      cell.innerText = 'X';
       divRow.appendChild(cell);
     }
     gameboard.appendChild(divRow);
   }
   return gameboard;
 }
-
-function generateCPUBoardHTML(player) {
-  const board = player.getBoard();
-  const gameboard = document.createElement('div');
-  gameboard.classList.add('computerBoard');
-  for (let row = 0; row < board.length; row++) {
-    const divRow = document.createElement('div');
-    divRow.classList.add('row');
-    for (let col = 0; col < board[row].length; col++) {
-      // Create each cell content
-      const cell = document.createElement('div');
-      cell.textContent = `C`;
-      cell.classList.add('cell');
-      divRow.appendChild(cell);
-    }
-    gameboard.appendChild(divRow);
-  }
-  return gameboard;
-}
-
-function generateCellContent(cell) {}
 
 module.exports = { initializeGame, renderPlayerBoards };
