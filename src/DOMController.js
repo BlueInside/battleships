@@ -16,18 +16,16 @@ function initializeGame(player1, player2) {
 }
 
 function renderPlayerBoards(player1, player2) {
-  const player1Board = player1.getBoard();
-  const player2Board = player2.getBoard();
   const player1BoardElement = document.getElementById('player1-board-display');
   const player2BoardElement = document.getElementById('player2-board-display');
 
   player1BoardElement.innerText = '';
   player2BoardElement.innerText = '';
-  player1BoardElement.appendChild(generateBoardHTML(player1Board));
-  player2BoardElement.appendChild(generateBoardHTML(player2Board));
+  player1BoardElement.appendChild(generatePlayerBoardHTML(player1));
+  player2BoardElement.appendChild(generateCPUBoardHTML(player2));
 }
-
-function generateBoardHTML(board) {
+function generatePlayerBoardHTML(player) {
+  const board = player.getBoard();
   const gameboard = document.createElement('div');
   gameboard.classList.add('playerBoard');
   for (let row = 0; row < board.length; row++) {
@@ -36,7 +34,7 @@ function generateBoardHTML(board) {
     for (let col = 0; col < board[row].length; col++) {
       // Create each cell content
       const cell = document.createElement('div');
-      cell.textContent = `X`;
+      cell.textContent = `P`;
       cell.classList.add('cell');
       divRow.appendChild(cell);
     }
@@ -44,4 +42,26 @@ function generateBoardHTML(board) {
   }
   return gameboard;
 }
+
+function generateCPUBoardHTML(player) {
+  const board = player.getBoard();
+  const gameboard = document.createElement('div');
+  gameboard.classList.add('computerBoard');
+  for (let row = 0; row < board.length; row++) {
+    const divRow = document.createElement('div');
+    divRow.classList.add('row');
+    for (let col = 0; col < board[row].length; col++) {
+      // Create each cell content
+      const cell = document.createElement('div');
+      cell.textContent = `C`;
+      cell.classList.add('cell');
+      divRow.appendChild(cell);
+    }
+    gameboard.appendChild(divRow);
+  }
+  return gameboard;
+}
+
+function generateCellContent(cell) {}
+
 module.exports = { initializeGame, renderPlayerBoards };
