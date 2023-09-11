@@ -1,10 +1,15 @@
+// gameboard.js - Defines the Gameboard module for managing the game state
+
 const Ship = require('../src/ship.js');
 const containsArray = require('../src/utility/containsArray.js');
+
 const Gameboard = () => {
   let board;
-  let missedHits = [];
-  let accurateHits = [];
-  let shipsOnBoard = [];
+  let missedHits = []; // Stores the coordinates of missed hits
+  let accurateHits = []; // Stores the coordinates of accurate hits
+  let shipsOnBoard = []; // Keeps trac of all ships currently on the board
+
+  // Create 10x10 board filled with null values and initializes game state
   const createBoard = ((size) => {
     board = Array(size)
       .fill(null)
@@ -13,6 +18,7 @@ const Gameboard = () => {
 
   const getBoard = () => board;
 
+  //Places a ship on the game board based on its length, starting position, and direction
   const placeShip = (shipLength, startX, startY, direction) => {
     const ship = Ship(shipLength);
     if (!direction) throw new Error('direction must be provided');
@@ -34,11 +40,15 @@ const Gameboard = () => {
     shipsOnBoard.push(ship);
   };
 
+  // Retrieves the array of missed hit coordinates
   const getHitRecords = () => missedHits;
+
+  // Handles an attack on the gameboard, recording hits and misses
   const receiveAttack = (cordX, cordY) => {
     const targetedCell = board[cordY][cordX];
-    // do nothing when same cell is being shoot twice
+
     if (
+      // Checks if cell was targeted before, does nothing if so
       containsArray(missedHits, [cordX, cordY]) ||
       containsArray(accurateHits, [cordX, cordY])
     ) {
@@ -52,8 +62,10 @@ const Gameboard = () => {
   };
 
   const getShipsOnBoard = () => shipsOnBoard;
+
   const getSuccessfulHits = () => accurateHits;
 
+  // Checks if the game is over by verifying if all ships are sunk
   const gameOver = () => {
     let sunkShips = 0;
     shipsOnBoard.forEach((ship) => {
@@ -74,4 +86,4 @@ const Gameboard = () => {
   };
 };
 
-module.exports = Gameboard;
+module.exports = Gameboard; // Export the Gameboard module
