@@ -7,12 +7,12 @@ const winner = null;
 
 function initializeGame() {
   DOMController.initializeGame(player1, player2);
-  gameLoop();
+  onShootEvent();
 }
 
 function updateGameBoards() {
   DOMController.renderPlayerBoards(player1, player2);
-  DOMController.addEnemyGameboardListeners(player1, player2);
+  DOMController.addEnemyGameboardListeners();
 }
 
 function gameOver() {
@@ -24,20 +24,25 @@ function gameOver() {
     return true;
   } else return false;
 }
-
-function gameLoop() {
+function onShootEvent() {
   document.addEventListener('shoot', (event) => {
     const { cordX, cordY } = event.detail;
     console.log(cordX, cordY);
     player1.shoot(cordX, cordY, player2);
-    if (gameOver()) {
-      //   handleGameOver(); // IMPLEMENT
-    }
-    player2.cpuMove(player1);
-    if (gameOver()) {
-      //   handleGameOver(); // IMPLEMENT
-    }
-    updateGameBoards();
+    // player 2 shoot automatically ?
+    player2.cpuMove();
   });
 }
-module.exports = { initializeGame, gameOver, updateGameBoards };
+function gameLoop() {
+  if (gameOver()) {
+    //   handleGameOver(); // IMPLEMENT
+  }
+  player2.cpuMove(player1);
+  if (gameOver()) {
+    //   handleGameOver(); // IMPLEMENT
+  }
+  updateGameBoards();
+
+  requestAnimationFrame(gameLoop);
+}
+module.exports = { initializeGame, gameOver, updateGameBoards, gameLoop };

@@ -81,7 +81,7 @@ function generateBoardHTML(player, displayShips) {
 }
 
 // Add event listeners on enemy gameboard cells
-function addEnemyGameboardListeners(player1, player2) {
+function addEnemyGameboardListeners() {
   const cpuCells = document.querySelectorAll('#player2-board-display .cell');
   cpuCells.forEach((cell) => {
     cell.addEventListener('click', () => {
