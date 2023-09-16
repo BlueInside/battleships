@@ -2,8 +2,8 @@ const Player = require('./player');
 const DOMController = require('./DOMController.js');
 const containsArray = require('./utility/containsArray');
 
-const player1 = Player();
-const player2 = Player();
+const player1 = Player('Player1');
+const player2 = Player('Player2');
 let winner = null;
 let continueLoop = true;
 
@@ -33,7 +33,6 @@ function gameOver() {
 function onShootEvent() {
   document.addEventListener('shoot', (event) => {
     const { cordX, cordY } = event.detail;
-
     // Checks if clicked cell has already been targeted, if so ignore the click
     if (!containsArray(player2.getHitRecords(), [cordX, cordY])) {
       player1.shoot(cordX, cordY, player2);
