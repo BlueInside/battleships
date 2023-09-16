@@ -23,8 +23,10 @@ const Player = () => {
   const cpuMove = (enemy) => {
     let cordX = Math.floor(Math.random() * 10);
     let cordY = Math.floor(Math.random() * 10);
-    if (isLegal(cordX, cordY, enemy)) shoot(cordX, cordY, enemy);
-    else cpuMove(enemy);
+    if (isLegal(cordX, cordY, enemy)) {
+      shoot(cordX, cordY, enemy);
+      console.log(cordX, cordY);
+    } else cpuMove(enemy);
   };
 
   const {
@@ -34,6 +36,7 @@ const Player = () => {
     getBoard,
     gameOver,
     getSuccessfulHits,
+    getMissedHits,
   } = gameboard;
   return {
     placeShip,
@@ -44,6 +47,7 @@ const Player = () => {
     cpuMove,
     gameOver,
     getSuccessfulHits,
+    getMissedHits,
   };
 };
 
