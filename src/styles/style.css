@@ -170,3 +170,11 @@ p {
   border: 2px dashed #393e46;
   margin: 5px;
 }
+
+.out-of-bounds {
+  background-color: #ff0000; /* Red color, for example */
+}
+
+.in-bounds {
+  background-color: green;
+}
