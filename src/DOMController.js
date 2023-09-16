@@ -35,7 +35,7 @@ function renderPlayerBoards(player1, player2) {
 }
 function generateBoardHTML(player, displayShips) {
   const board = player.getBoard();
-  const missedHits = player.getHitRecords();
+  const missedHits = player.getMissedHits();
   const successfulHits = player.getSuccessfulHits();
   const gameboard = document.createElement('div');
 

@@ -4,6 +4,7 @@ const DOMController = require('./DOMController.js');
 const player1 = Player();
 const player2 = Player();
 let winner = null;
+let continueLoop = true;
 
 function initializeGame() {
   DOMController.initializeGame(player1, player2);
@@ -27,27 +28,29 @@ function gameOver() {
 function onShootEvent() {
   document.addEventListener('shoot', (event) => {
     const { cordX, cordY } = event.detail;
-    console.log(cordX, cordY);
+    // console.log(cordX, cordY);
     player1.shoot(cordX, cordY, player2);
     player2.cpuMove(player1);
+    updateGameBoards();
   });
 }
+
+function handleGameOver(winner) {
+  if (winner === player1) console.log('P1 WON'); //Implement gameOver for p1
+  else if (winner === player2) console.log('P2 WON'); //Implement gameOver for p1
+  continueLoop = false;
+}
+
 function gameLoop() {
-  let continueLoop = true;
-  if (gameOver()) {
-    if (winner === player1) {
-      console.log('P1 WON');
-    }
-  }
-  if (gameOver()) {
-    if (winner === player2) {
-      console.log('P2 WON');
-    }
-  }
-  updateGameBoards();
-  player1.cpuMove(player2);
-  player2.cpuMove(player1);
-  requestAnimationFrame(gameLoop);
+  if (gameOver()) handleGameOver(winner);
+
+  if (gameOver()) handleGameOver(winner);
+
+  // updateGameBoards();
+  // player1.cpuMove(player2);
+  // player2.cpuMove(player1);
+
+  if (continueLoop) requestAnimationFrame(gameLoop);
 }
 module.exports = {
   initializeGame,
