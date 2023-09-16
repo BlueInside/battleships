@@ -106,3 +106,67 @@ p {
 .hidden {
   display: none;
 }
+
+#setup-screen {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 95%;
+  height: 60vh;
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+/* Style for draggable ships container */
+#ship-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+/* Style for draggable ships */
+.draggable-ship {
+  background-color: #00adb5;
+  color: #eeeeee;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.draggable-ship:hover {
+  background-color: #eeeeee;
+  color: #222831;
+  transform: scale(1.1);
+}
+
+/* Style for draggable ships while dragging */
+.draggable-ship:active {
+  opacity: 0.4;
+}
+
+.row-dropzone {
+  display: flex;
+}
+
+/* Style for ship length display */
+.draggable-ship::after {
+  content: 'Ship ' attr(data-length) ' cells'; /* Display ship length */
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+  color: #eeeeee;
+}
+
+/* CSS styles for drop zones */
+.drop-zone {
+  width: 40px;
+  height: 40px;
+  border: 2px dashed #393e46;
+  margin: 5px;
+}
