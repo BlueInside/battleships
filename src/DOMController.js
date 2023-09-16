@@ -1,4 +1,5 @@
 const containsArray = require('./utility/containsArray');
+const Ship = require('./ship.js');
 
 function initializeGame(player1, player2) {
   // Place ships for player1
@@ -29,6 +30,75 @@ function showNotification(message) {
     notificationContainer.classList.add('hidden');
   }, 3000);
 }
+
+function createShips() {
+  const ships = [];
+  const carrier = Ship(5);
+  const battleship = Ship(4);
+  const cruiser = Ship(3);
+  const submarine = Ship(3);
+  const destroyer = Ship(2);
+  ships.push(carrier, battleship, cruiser, submarine, destroyer);
+  return ships;
+}
+function displayShips() {
+  const ships = createShips();
+  const shipContainer = document.getElementById('ship-container');
+  ships.forEach((ship, index) => {
+    const shipElement = document.createElement('div');
+    shipElement.className = 'draggable-ship';
+
+    shipElement.id = `ship-${index}`;
+    shipElement.dataset.length = ship.length;
+
+    shipElement.draggable = true;
+
+    shipElement.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    });
+
+    shipContainer.appendChild(shipElement);
+  });
+}
+
+function createDropZones(player) {
+  const board = player.getBoard();
+  const boardContainer = document.getElementById('setup-screen');
+  for (let row = 0; row < board.length; row++) {
+    const rowHTML = document.createElement('div');
+    rowHTML.classList.add('row-dropzone');
+    for (let col = 0; col < board[row].length; col++) {
+      const dropZone = document.createElement('div');
+      dropZone.className = 'drop-zone';
+      dropZone.dataset.cordX = col;
+      dropZone.dataset.cordY = row;
+      rowHTML.appendChild(dropZone);
+
+      dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault(); // Allow drop
+        console.log(event);
+      });
+
+      dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+
+        const shipId = event.dataTransfer.getData('text/plain');
+        const shipElement = document.getElementById(shipId);
+
+        // Check if the drop is valid (e.g., ship fits in the zone)
+        if (isValidDrop(shipElement, dropZone)) {
+          // Place the ship on the gameboard
+          placeShipOnBoard(shipElement, dropZone, player);
+
+          // Remove the ship from the container
+          shipElement.remove();
+        }
+      });
+    }
+    boardContainer.appendChild(rowHTML);
+  }
+}
+
 function renderPlayerBoards(player1, player2) {
   const player1BoardElement = document.getElementById('player1-board-display');
   const player2BoardElement = document.getElementById('player2-board-display');
@@ -112,4 +182,6 @@ module.exports = {
   initializeGame,
   renderPlayerBoards,
   addEnemyGameboardListeners,
+  displayShips,
+  createDropZones,
 };
