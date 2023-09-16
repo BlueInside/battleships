@@ -3,7 +3,7 @@ const DOMController = require('./DOMController.js');
 
 const player1 = Player();
 const player2 = Player();
-const winner = null;
+let winner = null;
 
 function initializeGame() {
   DOMController.initializeGame(player1, player2);
@@ -33,11 +33,16 @@ function onShootEvent() {
   });
 }
 function gameLoop() {
+  let continueLoop = true;
   if (gameOver()) {
-    //   handleGameOver(); // IMPLEMENT
+    if (winner === player1) {
+      console.log('P1 WON');
+    }
   }
   if (gameOver()) {
-    //   handleGameOver(); // IMPLEMENT
+    if (winner === player2) {
+      console.log('P2 WON');
+    }
   }
   updateGameBoards();
   player1.cpuMove(player2);
