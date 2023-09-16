@@ -7,7 +7,7 @@ const Gameboard = () => {
   let board;
   let missedHits = []; // Stores the coordinates of missed hits
   let accurateHits = []; // Stores the coordinates of accurate hits
-  let shipsOnBoard = []; // Keeps trac of all ships currently on the board
+  let shipsOnBoard = []; // Keeps track of all ships currently on the board
 
   // Create 10x10 board filled with null values and initializes game state
   const createBoard = ((size) => {
@@ -41,7 +41,9 @@ const Gameboard = () => {
   };
 
   // Retrieves the array of missed hit coordinates
-  const getHitRecords = () => missedHits;
+  const getHitRecords = () => [...missedHits, ...accurateHits];
+
+  const getMissedHits = () => missedHits;
 
   // Handles an attack on the gameboard, recording hits and misses
   const receiveAttack = (cordX, cordY) => {
@@ -83,6 +85,7 @@ const Gameboard = () => {
     gameOver,
     getShipsOnBoard,
     getSuccessfulHits,
+    getMissedHits,
   };
 };
 
