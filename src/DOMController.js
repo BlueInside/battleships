@@ -18,6 +18,23 @@ function initializeGame(player1, player2) {
   player2.placeShip(2, 7, 1, 'vertical');
 }
 
+function showNotification(message) {
+  const notificationContainer = document.getElementById(
+    'notification-container'
+  );
+  const notificationText = document.getElementById('notification-text');
+
+  // Set the notification text
+  notificationText.innerText = message;
+
+  // Show notification container
+  notificationContainer.classList.remove('hidden');
+
+  // Hide the notification after a few seconds
+  setTimeout(() => {
+    notificationContainer.classList.add('hidden');
+  }, 3000);
+}
 function renderPlayerBoards(player1, player2) {
   const player1BoardElement = document.getElementById('player1-board-display');
   const player2BoardElement = document.getElementById('player2-board-display');
@@ -33,6 +50,7 @@ function renderPlayerBoards(player1, player2) {
     generateBoardHTML(player2, (displayShips = false))
   );
 }
+
 function generateBoardHTML(player, displayShips) {
   const board = player.getBoard();
   const missedHits = player.getMissedHits();
