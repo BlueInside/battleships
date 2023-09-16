@@ -13,6 +13,11 @@ function initializeGame() {
   onShootEvent();
 }
 
+function startSetup() {
+  // DOMController.createSetupBoard(player1);
+  DOMController.createDropZones(player1);
+  DOMController.displayShips();
+}
 function updateGameBoards() {
   DOMController.renderPlayerBoards(player1, player2);
   DOMController.addEnemyGameboardListeners();
@@ -59,4 +64,5 @@ module.exports = {
   initializeGame,
   updateGameBoards,
   gameLoop,
+  startSetup,
 };
