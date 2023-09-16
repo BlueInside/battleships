@@ -3,3 +3,4 @@ const Game = require('./game.js');
 
 Game.initializeGame();
 Game.updateGameBoards();
+Game.gameLoop();

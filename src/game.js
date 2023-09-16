@@ -29,20 +29,24 @@ function onShootEvent() {
     const { cordX, cordY } = event.detail;
     console.log(cordX, cordY);
     player1.shoot(cordX, cordY, player2);
-    // player 2 shoot automatically ?
-    player2.cpuMove();
+    player2.cpuMove(player1);
   });
 }
 function gameLoop() {
   if (gameOver()) {
     //   handleGameOver(); // IMPLEMENT
   }
-  player2.cpuMove(player1);
   if (gameOver()) {
     //   handleGameOver(); // IMPLEMENT
   }
   updateGameBoards();
-
+  player1.cpuMove(player2);
+  player2.cpuMove(player1);
   requestAnimationFrame(gameLoop);
 }
-module.exports = { initializeGame, gameOver, updateGameBoards, gameLoop };
+module.exports = {
+  initializeGame,
+  gameOver,
+  updateGameBoards,
+  gameLoop,
+};
