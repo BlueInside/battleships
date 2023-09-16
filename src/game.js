@@ -25,10 +25,10 @@ function gameOver() {
     return true;
   } else return false;
 }
+
 function onShootEvent() {
   document.addEventListener('shoot', (event) => {
     const { cordX, cordY } = event.detail;
-    // console.log(cordX, cordY);
     player1.shoot(cordX, cordY, player2);
     player2.cpuMove(player1);
     updateGameBoards();
@@ -43,12 +43,6 @@ function handleGameOver(winner) {
 
 function gameLoop() {
   if (gameOver()) handleGameOver(winner);
-
-  if (gameOver()) handleGameOver(winner);
-
-  // updateGameBoards();
-  // player1.cpuMove(player2);
-  // player2.cpuMove(player1);
 
   if (continueLoop) requestAnimationFrame(gameLoop);
 }
