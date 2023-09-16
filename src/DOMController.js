@@ -67,7 +67,7 @@ function generateBoardHTML(player, displayShips) {
       cellHTML.dataset.cordY = row;
 
       // Set the cell text content to
-      cellHTML.innerText = '/';
+      cellHTML.innerText = '';
 
       // Append the cell to the current row
       rowHTML.appendChild(cellHTML);
