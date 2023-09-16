@@ -2,12 +2,6 @@ const containsArray = require('./utility/containsArray');
 
 function initializeGame(player1, player2) {
   // Place ships for player1
-  player1.placeShip(5, 5, 1, 'vertical');
-  player1.placeShip(4, 2, 7, 'horizontal');
-  player1.placeShip(3, 7, 4, 'horizontal');
-  player1.placeShip(3, 2, 1, 'vertical');
-  player1.placeShip(2, 1, 5, 'horizontal');
-  player1.placeShip(2, 8, 9, 'horizontal');
 
   // Place ships for player2
   player2.placeShip(5, 4, 7, 'horizontal');
