@@ -76,6 +76,12 @@ function generateBoardHTML(player, displayShips) {
 
       // Add appropriate CSS classes based on cell content
       if (isShip) cellHTML.classList.add('ship');
+      if (currentCell && currentCell.isSunk()) {
+        cellHTML.classList.add('sunk');
+
+        // Set the sunk cell text content to X
+        cellHTML.innerText = 'X';
+      }
       if (isMissed) cellHTML.classList.add('miss');
       else if (isSuccessful) cellHTML.classList.add('hit');
       cellHTML.classList.add('cell');
@@ -83,9 +89,6 @@ function generateBoardHTML(player, displayShips) {
       // Add cords X and Y as dataset;
       cellHTML.dataset.cordX = col;
       cellHTML.dataset.cordY = row;
-
-      // Set the cell text content to
-      cellHTML.innerText = '';
 
       // Append the cell to the current row
       rowHTML.appendChild(cellHTML);
