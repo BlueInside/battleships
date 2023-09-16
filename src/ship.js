@@ -11,7 +11,7 @@ const Ship = (length) => {
 
   const isSunk = () => (getHits() === length ? true : false); // Check if the ship is sunk
 
-  return { hit, getHits, isSunk, isShip };
+  return { hit, getHits, isSunk, isShip, length };
 };
 
 module.exports = Ship;
