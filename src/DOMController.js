@@ -1,6 +1,14 @@
 const containsArray = require('./utility/containsArray');
 const Ship = require('./ship.js');
 
+let currentDraggedShip = null;
+let rotation = 'horizontal';
+document.addEventListener('keyup', (event) => {
+  if (event.keyCode === 82)
+    rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
+  console.log(rotation);
+});
+
 function initializeGame(player1, player2) {
   // Place ships for player1
 
@@ -55,6 +63,10 @@ function displayShips() {
 
     shipElement.addEventListener('dragstart', (event) => {
       event.dataTransfer.setData('text/plain', event.target.id);
+      currentDraggedShip = {
+        id: event.target.id,
+        length: ship.length,
+      };
     });
 
     shipContainer.appendChild(shipElement);
@@ -72,27 +84,52 @@ function createDropZones(player) {
       dropZone.className = 'drop-zone';
       dropZone.dataset.cordX = col;
       dropZone.dataset.cordY = row;
+
       rowHTML.appendChild(dropZone);
 
       dropZone.addEventListener('dragover', (event) => {
         event.preventDefault(); // Allow drop
-        console.log(event);
+        // Checks if draggable element is valid for dropping
+        const cordX = Number(event.target.dataset.cordX);
+        const cordY = Number(event.target.dataset.cordY);
+        const shipLength = currentDraggedShip
+          ? currentDraggedShip.length
+          : null;
+        let isShipOutOfBounds = shipLength + cordX > board.length;
+        const targetedCell = event.target;
+        // Checks if ship is inside bounds
+        if (isShipOutOfBounds) {
+          targetedCell.classList.add('out-of-bounds');
+        } else {
+          targetedCell.classList.add('in-bounds');
+        }
+      });
+
+      dropZone.addEventListener('dragleave', (event) => {
+        const targetedCell = event.target;
+        // Remove the "out-of-bounds" class when the cursor leaves the cell
+        targetedCell.classList.remove('out-of-bounds', 'in-bounds');
       });
 
       dropZone.addEventListener('drop', (event) => {
         event.preventDefault();
+        const targetedCell = event.target;
+        targetedCell.classList.remove('out-of-bounds', 'in-bounds');
 
         const shipId = event.dataTransfer.getData('text/plain');
-        const shipElement = document.getElementById(shipId);
+        console.log(shipId);
+        // const shipElement = document.getElementById(shipId);
+        // console.log(event.target.dataset.cordX);
+        // console.log(event.target.dataset.cordY);
 
         // Check if the drop is valid (e.g., ship fits in the zone)
-        if (isValidDrop(shipElement, dropZone)) {
-          // Place the ship on the gameboard
-          placeShipOnBoard(shipElement, dropZone, player);
+        // if (isValidDrop(shipElement, dropZone)) {
+        //   // Place the ship on the gameboard
+        //   placeShipOnBoard(shipElement, dropZone, player);
 
-          // Remove the ship from the container
-          shipElement.remove();
-        }
+        //   // Remove the ship from the container
+        // shipElement.remove();
+        // }
       });
     }
     boardContainer.appendChild(rowHTML);
