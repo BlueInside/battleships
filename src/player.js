@@ -3,7 +3,7 @@
 const Gameboard = require('../src/gameboard.js');
 const containsArray = require('../src/utility/containsArray.js');
 
-const Player = () => {
+const Player = (name) => {
   let gameboard = Gameboard();
 
   // Shoots enemy board
@@ -39,6 +39,7 @@ const Player = () => {
     getMissedHits,
   } = gameboard;
   return {
+    name,
     placeShip,
     getHitRecords,
     receiveAttack,
