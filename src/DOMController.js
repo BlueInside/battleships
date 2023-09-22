@@ -4,25 +4,26 @@ const Ship = require('./ship.js');
 let currentDraggedShip = null;
 let rotation = 'horizontal';
 
-document.addEventListener('keyup', (event) => {
-  if (event.keyCode === 82)
-    rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
-  displayAndUpdateShipPosition();
-  const displayedShips = document.querySelectorAll('.draggable-ship');
-  displayedShips.forEach((ship) => ship.classList.toggle('rotated'));
-});
+const shipPositionDisplay = document.getElementById('ship-position');
 
-function displayAndUpdateShipPosition() {
-  const shipPositionDisplay = document.getElementById('ship-position');
-  shipPositionDisplay.classList.remove('hidden');
+function handleRotationClick() {
+  rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
   shipPositionDisplay.classList.toggle('vertical');
   shipPositionDisplay.innerText = `Ship orientation: ${rotation}`;
+  const displayedShips = document.querySelectorAll('.draggable-ship');
+  displayedShips.forEach((ship) => ship.classList.toggle('rotated'));
 }
 
-function rotateShipsDuringSetup() {
-  const displayedShips = document.getElementsByClassName('draggable-ship');
-  displayedShips.classList.toggle('rotated');
+function addRotationEventListener() {
+  shipPositionDisplay.classList.toggle('hidden');
+  shipPositionDisplay.addEventListener('click', handleRotationClick);
 }
+
+function removeRotationEventListener() {
+  shipPositionDisplay.classList.toggle('hidden');
+  shipPositionDisplay.addEventListener('click', handleRotationClick);
+}
+
 function initializeGame(player1, player2) {
   // Place ships for player1
 
@@ -241,5 +242,6 @@ module.exports = {
   addEnemyGameboardListeners,
   displayShips,
   createDropZones,
-  displayAndUpdateShipPosition,
+  addRotationEventListener,
+  showNotification,
 };
