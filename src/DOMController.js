@@ -3,11 +3,19 @@ const Ship = require('./ship.js');
 
 let currentDraggedShip = null;
 let rotation = 'horizontal';
+
 document.addEventListener('keyup', (event) => {
   if (event.keyCode === 82)
     rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
-  console.log(rotation);
+  displayAndUpdateShipPosition();
 });
+
+function displayAndUpdateShipPosition() {
+  const shipPositionDisplay = document.getElementById('ship-position');
+  shipPositionDisplay.classList.remove('hidden');
+  shipPositionDisplay.innerText = '';
+  shipPositionDisplay.innerText = rotation;
+}
 
 function initializeGame(player1, player2) {
   // Place ships for player1
@@ -49,6 +57,7 @@ function createShips() {
   ships.push(carrier, battleship, cruiser, submarine, destroyer);
   return ships;
 }
+
 function displayShips() {
   const ships = createShips();
   const shipContainer = document.getElementById('ship-container');
@@ -67,6 +76,7 @@ function displayShips() {
         id: event.target.id,
         length: ship.length,
       };
+      console.log(currentDraggedShip);
     });
 
     shipContainer.appendChild(shipElement);
@@ -95,7 +105,11 @@ function createDropZones(player) {
         const shipLength = currentDraggedShip
           ? currentDraggedShip.length
           : null;
-        let isShipOutOfBounds = shipLength + cordX > board.length;
+        let isShipOutOfBounds = null;
+        if (rotation === 'horizontal')
+          isShipOutOfBounds = shipLength + cordX > board.length;
+        else if (rotation === 'vertical')
+          isShipOutOfBounds = shipLength + cordY > board.length;
         const targetedCell = event.target;
         // Checks if ship is inside bounds
         if (isShipOutOfBounds) {
