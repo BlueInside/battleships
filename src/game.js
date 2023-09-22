@@ -15,7 +15,8 @@ function initializeGame() {
 
 function startSetup() {
   // DOMController.createSetupBoard(player1);
-  DOMController.displayAndUpdateShipPosition();
+  // DOMController.displayAndUpdateShipPosition();
+  DOMController.addRotationEventListener();
   DOMController.createDropZones(player1);
   DOMController.displayShips();
 }

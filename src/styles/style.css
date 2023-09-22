@@ -199,3 +199,7 @@ p {
 .in-bounds {
   background-color: green;
 }
+
+.placed {
+  background-color: #00adb5;
+}
