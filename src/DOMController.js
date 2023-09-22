@@ -8,15 +8,21 @@ document.addEventListener('keyup', (event) => {
   if (event.keyCode === 82)
     rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
   displayAndUpdateShipPosition();
+  const displayedShips = document.querySelectorAll('.draggable-ship');
+  displayedShips.forEach((ship) => ship.classList.toggle('rotated'));
 });
 
 function displayAndUpdateShipPosition() {
   const shipPositionDisplay = document.getElementById('ship-position');
   shipPositionDisplay.classList.remove('hidden');
-  shipPositionDisplay.innerText = '';
-  shipPositionDisplay.innerText = rotation;
+  shipPositionDisplay.classList.toggle('vertical');
+  shipPositionDisplay.innerText = `Ship orientation: ${rotation}`;
 }
 
+function rotateShipsDuringSetup() {
+  const displayedShips = document.getElementsByClassName('draggable-ship');
+  displayedShips.classList.toggle('rotated');
+}
 function initializeGame(player1, player2) {
   // Place ships for player1
 
@@ -235,4 +241,5 @@ module.exports = {
   addEnemyGameboardListeners,
   displayShips,
   createDropZones,
+  displayAndUpdateShipPosition,
 };
