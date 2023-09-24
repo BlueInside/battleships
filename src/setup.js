@@ -16,18 +16,18 @@ function handleRotationClick() {
 }
 
 function addRotationEventListener() {
-  shipPositionDisplay.classList.toggle('hidden');
   shipPositionDisplay.addEventListener('click', handleRotationClick);
 }
 
 function removeRotationEventListener() {
-  shipPositionDisplay.classList.toggle('hidden');
   shipPositionDisplay.addEventListener('click', handleRotationClick);
 }
 
-function createDropZones(player) {
+function createDropZones(player, player2) {
   const board = player.getBoard();
   const boardContainer = document.getElementById('setup-screen');
+  boardContainer.innerHTML = '';
+
   for (let row = 0; row < board.length; row++) {
     const rowHTML = document.createElement('div');
     rowHTML.classList.add('row-dropzone');
@@ -118,7 +118,12 @@ function createDropZones(player) {
 
           // place ship on players gameboard
           player.placeShip(shipLength, col, row, rotation);
+          player2.placeShip(shipLength, col, row, rotation);
           shipElement.remove();
+
+          console.log('PLAYER1', player.getBoard());
+          createResetButton();
+          if (isShipContainerEmpty()) createPlayButton();
 
           // TODO fix issue where you can drag previous ship
           // by dragging random area into board
@@ -128,13 +133,43 @@ function createDropZones(player) {
           targetedCell.classList.remove('out-of-bounds', 'in-bounds')
         );
 
-        // FINISHED HERE, I JUST MADE SHIPS DISPLAY IF OUT OF BOUNDS OR IN
         // INSIDE THE DROPZONES TRY TO MAKE SETUP MORE MODULAR, START PLACING
         // SHIPS BASED ON THE SHIPS DRAGGED AND DROPPED, AND THEN PLAY A GAME
       });
     }
     boardContainer.appendChild(rowHTML);
   }
+}
+
+function isShipContainerEmpty() {
+  const shipsContainer = document.getElementById('ship-container');
+  return !shipsContainer.hasChildNodes();
+}
+
+function createPlayButton() {
+  const playButton = document.createElement('button');
+  playButton.innerText = 'Start';
+  playButton.id = 'start-button';
+  playButton.addEventListener('click', () => {
+    const playEvent = new Event('startGame');
+    document.dispatchEvent(playEvent);
+  });
+  const buttonsContainer = document.getElementById('buttons-container');
+  buttonsContainer.appendChild(playButton);
+}
+
+function createResetButton() {
+  const resetButton = document.createElement('button');
+  resetButton.innerText = 'Reset';
+  resetButton.id = 'reset-button';
+  resetButton.addEventListener('click', () => {
+    const resetEvent = new Event('resetGame');
+    document.dispatchEvent(resetEvent);
+    removeRotationEventListener();
+  });
+  const buttonsContainer = document.getElementById('buttons-container');
+  buttonsContainer.innerHTML = '';
+  buttonsContainer.appendChild(resetButton);
 }
 
 function createShips() {
@@ -151,6 +186,7 @@ function createShips() {
 function displayShips() {
   const ships = createShips();
   const shipContainer = document.getElementById('ship-container');
+  shipContainer.innerHTML = '';
   ships.forEach((ship, index) => {
     const shipElement = document.createElement('div');
     shipElement.className = 'draggable-ship';
@@ -161,7 +197,6 @@ function displayShips() {
     shipElement.draggable = true;
 
     shipElement.addEventListener('dragstart', (event) => {
-      console.log(event);
       event.dataTransfer.setData('text/plain', event.target.id);
       currentDraggedShip = {
         id: event.target.id,

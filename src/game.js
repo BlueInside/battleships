@@ -3,24 +3,29 @@ const DOMController = require('./DOMController.js');
 const containsArray = require('./utility/containsArray');
 const setup = require('./setup.js');
 
-const player1 = Player('Player1');
-const player2 = Player('Player2');
+let player1 = Player('Player1');
+let player2 = Player('Player2');
 let winner = null;
 let continueLoop = true;
 
 // Place ships and listen to player clicks (shoots)
 function initializeGame() {
-  DOMController.initializeGame(player1, player2);
+  // DOMController.initializeGame(player1, player2);
   onShootEvent();
+  updateGameBoards();
+  gameLoop();
 }
 
 function startSetup() {
   // DOMController.createSetupBoard(player1);
   // DOMController.displayAndUpdateShipPosition();
+  player1 = Player('Player1');
+  player2 = Player('Player2');
   setup.addRotationEventListener();
-  setup.createDropZones(player1);
+  setup.createDropZones(player1, player2);
   setup.displayShips();
 }
+
 function updateGameBoards() {
   DOMController.renderPlayerBoards(player1, player2);
   DOMController.addEnemyGameboardListeners();
