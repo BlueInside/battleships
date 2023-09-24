@@ -10,20 +10,25 @@ let continueLoop = true;
 
 // Place ships and listen to player clicks (shoots)
 function initializeGame() {
-  // DOMController.initializeGame(player1, player2);
   onShootEvent();
   updateGameBoards();
   gameLoop();
 }
 
 function startSetup() {
-  // DOMController.createSetupBoard(player1);
-  // DOMController.displayAndUpdateShipPosition();
   player1 = Player('Player1');
   player2 = Player('Player2');
+  setup.removeRotationEventListener();
   setup.addRotationEventListener();
   setup.createDropZones(player1, player2);
   setup.displayShips();
+  setup.showSetupWindow();
+}
+
+function playAgain() {
+  DOMController.closeGameOverWindow();
+  DOMController.closeBoardDisplayWindow();
+  startSetup();
 }
 
 function updateGameBoards() {
@@ -57,15 +62,24 @@ function onShootEvent() {
 
 // Displays winner and stops gameLoop
 function handleGameOver(winner) {
-  if (winner === player1) console.log('P1 WON'); //Implement gameOver for p1
-  else if (winner === player2) console.log('P2 WON'); //Implement gameOver for p1
-  continueLoop = false;
+  const gameOverModal = document.getElementById('game-over-modal');
+  const winnerMessage = document.getElementById('winner-message');
+
+  if (winner === player1) {
+    winnerMessage.textContent = 'Player 1 Wins!';
+  } else if (winner === player2) {
+    winnerMessage.textContent = 'Player 2 Wins!';
+  }
+
+  gameOverModal.classList.remove('hidden');
+  // reset winner
+  winner = null;
 }
 
 // Controls main game loop using requestAnimationFrame, and checks game's end condition
 function gameLoop() {
   if (gameOver()) handleGameOver(winner);
-  if (continueLoop) requestAnimationFrame(gameLoop);
+  else requestAnimationFrame(gameLoop);
 }
 
 module.exports = {
@@ -73,4 +87,5 @@ module.exports = {
   updateGameBoards,
   gameLoop,
   startSetup,
+  playAgain,
 };
