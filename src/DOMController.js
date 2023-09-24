@@ -91,8 +91,20 @@ function addEnemyGameboardListeners() {
   });
 }
 
+function closeGameOverWindow() {
+  const gameOverDisplay = document.getElementById('game-over-modal');
+  gameOverDisplay.classList.add('hidden');
+}
+
+function closeBoardDisplayWindow() {
+  const gameBoardWindow = document.getElementById('display');
+  gameBoardWindow.classList.add('hidden');
+}
+
 module.exports = {
   initializeGame,
   renderPlayerBoards,
   addEnemyGameboardListeners,
+  closeBoardDisplayWindow,
+  closeGameOverWindow,
 };
