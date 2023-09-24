@@ -2,7 +2,27 @@ const Ship = require('./ship.js');
 let targetedCells = [];
 let currentDraggedShip = null;
 let rotation = 'horizontal';
+let isShipOutOfBounds = null;
+let isColliding = false;
 const shipPositionDisplay = document.getElementById('ship-position');
+
+function showNotification(message) {
+  const notificationContainer = document.getElementById(
+    'notification-container'
+  );
+  const notificationText = document.getElementById('notification-text');
+
+  // Set the notification text
+  notificationText.innerText = message;
+
+  // Show notification container
+  notificationContainer.classList.remove('hidden');
+
+  // Hide the notification after a few seconds
+  setTimeout(() => {
+    notificationContainer.classList.add('hidden');
+  }, 3000);
+}
 
 function handleRotationClick() {
   rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
@@ -43,9 +63,9 @@ function createDropZones(player) {
         const shipLength = currentDraggedShip
           ? currentDraggedShip.length
           : null;
-        let isShipOutOfBounds = null;
-        let isColliding = false;
+
         targetedCells = [];
+        isColliding = false;
 
         if (rotation === 'horizontal') {
           // Check horizontal bounds and collect targeted cells;
@@ -99,11 +119,20 @@ function createDropZones(player) {
       dropZone.addEventListener('drop', (event) => {
         event.preventDefault();
 
-        //place ships on the board different color
-        targetedCells.forEach((targetedCell) => {
-          targetedCell.classList.add('placed', 'ship');
-          targetedCell.classList.remove('out-of-bounds', 'in-bounds');
-        });
+        //
+        if (isColliding || isShipOutOfBounds) {
+          // HANDLE WHEN SHIP COLLIDES OR IS OUT OF BOUNDS
+          console.log('WRONG');
+        } else {
+          // HANDLE WHEN SHIP IS PLACED CORRECTLY
+          targetedCells.forEach((targetedCell) => {
+            targetedCell.classList.add('placed', 'ship');
+          });
+        }
+
+        targetedCells.forEach((targetedCell) =>
+          targetedCell.classList.remove('out-of-bounds', 'in-bounds')
+        );
 
         const shipId = event.dataTransfer.getData('text/plain');
         console.log(shipId);
@@ -158,7 +187,6 @@ function displayShips() {
         id: event.target.id,
         length: ship.length,
       };
-      console.log(currentDraggedShip);
     });
 
     shipContainer.appendChild(shipElement);
