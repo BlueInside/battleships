@@ -101,8 +101,11 @@ function createDropZones(player, player2) {
       dropZone.addEventListener('drop', (event) => {
         event.preventDefault();
 
+        // Does nothing when elements other than ships are dragged
+        if (!currentDraggedShip) {
+        }
         // Check if drop is valid
-        if (isColliding || isShipOutOfBounds) {
+        else if (isColliding || isShipOutOfBounds) {
           // HANDLE WHEN SHIP COLLIDES OR IS OUT OF BOUNDS
           showNotification(`Invalid ship placement.`, 800);
         } else {
@@ -119,14 +122,15 @@ function createDropZones(player, player2) {
           // place ship on players gameboard
           player.placeShip(shipLength, col, row, rotation);
           player2.placeShip(shipLength, col, row, rotation);
+
           shipElement.remove();
 
-          console.log('PLAYER1', player.getBoard());
           createResetButton();
           if (isShipContainerEmpty()) createPlayButton();
 
           // TODO fix issue where you can drag previous ship
           // by dragging random area into board
+          currentDraggedShip = null;
         }
 
         targetedCells.forEach((targetedCell) =>
