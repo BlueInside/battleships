@@ -1,6 +1,7 @@
 const Player = require('./player');
 const DOMController = require('./DOMController.js');
 const containsArray = require('./utility/containsArray');
+const setup = require('./setup.js');
 
 const player1 = Player('Player1');
 const player2 = Player('Player2');
@@ -16,9 +17,9 @@ function initializeGame() {
 function startSetup() {
   // DOMController.createSetupBoard(player1);
   // DOMController.displayAndUpdateShipPosition();
-  DOMController.addRotationEventListener();
-  DOMController.createDropZones(player1);
-  DOMController.displayShips();
+  setup.addRotationEventListener();
+  setup.createDropZones(player1);
+  setup.displayShips();
 }
 function updateGameBoards() {
   DOMController.renderPlayerBoards(player1, player2);
