@@ -165,7 +165,6 @@ function createResetButton() {
   resetButton.addEventListener('click', () => {
     const resetEvent = new Event('resetGame');
     document.dispatchEvent(resetEvent);
-    removeRotationEventListener();
   });
   const buttonsContainer = document.getElementById('buttons-container');
   buttonsContainer.innerHTML = '';
@@ -174,12 +173,12 @@ function createResetButton() {
 
 function createShips() {
   const ships = [];
-  const carrier = Ship(5);
-  const battleship = Ship(4);
-  const cruiser = Ship(3);
-  const submarine = Ship(3);
+  // const carrier = Ship(5);
+  // const battleship = Ship(4);
+  // const cruiser = Ship(3);
+  // const submarine = Ship(3);
   const destroyer = Ship(2);
-  ships.push(carrier, battleship, cruiser, submarine, destroyer);
+  ships.push(destroyer);
   return ships;
 }
 
@@ -208,9 +207,15 @@ function displayShips() {
   });
 }
 
+function showSetupWindow() {
+  const setupDisplay = document.getElementById('setup-display');
+  setupDisplay.classList.remove('hidden');
+}
+
 module.exports = {
   createDropZones,
   displayShips,
   addRotationEventListener,
   removeRotationEventListener,
+  showSetupWindow,
 };
