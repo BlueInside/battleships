@@ -1,28 +1,11 @@
 const Ship = require('./ship.js');
+const showNotification = require('./utility/showNotification.js');
 let targetedCells = [];
 let currentDraggedShip = null;
 let rotation = 'horizontal';
 let isShipOutOfBounds = null;
 let isColliding = false;
 const shipPositionDisplay = document.getElementById('ship-position');
-
-function showNotification(message) {
-  const notificationContainer = document.getElementById(
-    'notification-container'
-  );
-  const notificationText = document.getElementById('notification-text');
-
-  // Set the notification text
-  notificationText.innerText = message;
-
-  // Show notification container
-  notificationContainer.classList.remove('hidden');
-
-  // Hide the notification after a few seconds
-  setTimeout(() => {
-    notificationContainer.classList.add('hidden');
-  }, 3000);
-}
 
 function handleRotationClick() {
   rotation = rotation === 'horizontal' ? 'vertical' : 'horizontal';
@@ -58,7 +41,6 @@ function createDropZones(player) {
 
       dropZone.addEventListener('dragover', (event) => {
         event.preventDefault(); // Allow drop
-
         // Checks if draggable element is valid for dropping
         const shipLength = currentDraggedShip
           ? currentDraggedShip.length
@@ -119,35 +101,32 @@ function createDropZones(player) {
       dropZone.addEventListener('drop', (event) => {
         event.preventDefault();
 
-        //
+        // Check if drop is valid
         if (isColliding || isShipOutOfBounds) {
           // HANDLE WHEN SHIP COLLIDES OR IS OUT OF BOUNDS
-          console.log('WRONG');
+          showNotification(`Invalid ship placement.`, 800);
         } else {
           // HANDLE WHEN SHIP IS PLACED CORRECTLY
           targetedCells.forEach((targetedCell) => {
             targetedCell.classList.add('placed', 'ship');
           });
+
+          // Remove placed ship HTMLElement
+          const shipId = currentDraggedShip.id;
+          const shipElement = document.getElementById(`${shipId}`);
+          const shipLength = currentDraggedShip.length;
+
+          // place ship on players gameboard
+          player.placeShip(shipLength, col, row, rotation);
+          shipElement.remove();
+
+          // TODO fix issue where you can drag previous ship
+          // by dragging random area into board
         }
 
         targetedCells.forEach((targetedCell) =>
           targetedCell.classList.remove('out-of-bounds', 'in-bounds')
         );
-
-        const shipId = event.dataTransfer.getData('text/plain');
-        console.log(shipId);
-        // const shipElement = document.getElementById(shipId);
-        // console.log(event.target.dataset.col);
-        // console.log(event.target.dataset.row);
-
-        // Check if the drop is valid (e.g., ship fits in the zone)
-        // if (isValidDrop(shipElement, dropZone)) {
-        //   // Place the ship on the gameboard
-        //   placeShipOnBoard(shipElement, dropZone, player);
-
-        //   // Remove the ship from the container
-        // shipElement.remove();
-        // }
 
         // FINISHED HERE, I JUST MADE SHIPS DISPLAY IF OUT OF BOUNDS OR IN
         // INSIDE THE DROPZONES TRY TO MAKE SETUP MORE MODULAR, START PLACING
@@ -182,6 +161,7 @@ function displayShips() {
     shipElement.draggable = true;
 
     shipElement.addEventListener('dragstart', (event) => {
+      console.log(event);
       event.dataTransfer.setData('text/plain', event.target.id);
       currentDraggedShip = {
         id: event.target.id,
