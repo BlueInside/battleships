@@ -7,10 +7,11 @@
   </head>
   <body>
     <div id="game-info"></div>
-    <div>
-      <div id="ship-position" class="hidden">press me to rotate ships</div>
+    <div id="setup-display" class="hidden">
+      <div id="ship-position">press me to rotate ships</div>
       <div id="setup-screen"></div>
       <div id="ship-container"></div>
+      <div id="buttons-container"></div>
     </div>
     <div id="game-board"></div>
     <div id="initial-screen">
@@ -34,6 +35,14 @@
       <div id="display">
         <div id="player1-board-display"></div>
         <div id="player2-board-display"></div>
+      </div>
+
+      <div id="game-over-modal" class="hidden">
+        <div class="game-over-content">
+          <h2>Game Over</h2>
+          <p id="winner-message">Player 1 Wins!</p>
+          <button id="play-again-button">Play Again</button>
+        </div>
       </div>
     </main>
   </body>
