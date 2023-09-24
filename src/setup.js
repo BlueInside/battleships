@@ -5,6 +5,8 @@ let currentDraggedShip = null;
 let rotation = 'horizontal';
 let isShipOutOfBounds = null;
 let isColliding = false;
+let boardSize = null;
+
 const shipPositionDisplay = document.getElementById('ship-position');
 
 function handleRotationClick() {
@@ -23,125 +25,143 @@ function removeRotationEventListener() {
   shipPositionDisplay.addEventListener('click', handleRotationClick);
 }
 
-function createDropZones(player, player2) {
-  const board = player.getBoard();
+function createDropZones(player1, player2) {
+  const board = player1.getBoard();
+  boardSize = board.length;
+
   const boardContainer = document.getElementById('setup-screen');
   boardContainer.innerHTML = '';
 
-  for (let row = 0; row < board.length; row++) {
+  for (let row = 0; row < boardSize; row++) {
     const rowHTML = document.createElement('div');
     rowHTML.classList.add('row-dropzone');
-    for (let col = 0; col < board[row].length; col++) {
+
+    for (let col = 0; col < boardSize; col++) {
       const dropZone = document.createElement('div');
       dropZone.className = 'drop-zone';
-      dropZone.dataset.cordX = col;
-      dropZone.dataset.cordY = row;
+      dropZone.dataset.coordX = col;
+      dropZone.dataset.coordY = row;
 
       rowHTML.appendChild(dropZone);
 
-      dropZone.addEventListener('dragover', (event) => {
-        event.preventDefault(); // Allow drop
-        // Checks if draggable element is valid for dropping
-        const shipLength = currentDraggedShip
-          ? currentDraggedShip.length
-          : null;
+      dropZone.addEventListener('dragover', handleDragOver);
 
-        targetedCells = [];
-        isColliding = false;
+      dropZone.addEventListener('dragleave', handleDragLeave);
 
-        if (rotation === 'horizontal') {
-          // Check horizontal bounds and collect targeted cells;
-          isShipOutOfBounds = shipLength + col > board.length;
-          for (let i = col; i < shipLength + col; i++) {
-            const targetedCell = document.querySelector(
-              `[data-cord-x="${i}"][data-cord-y="${row}"]`
-            );
-
-            // check if cell is inside board
-            if (targetedCell) {
-              targetedCells.push(targetedCell);
-              // Check if collides with other ship
-              if (targetedCell.classList.contains('ship')) isColliding = true;
-            }
-          }
-        } else if (rotation === 'vertical') {
-          // Check vertical bounds and collect targeted cells
-          isShipOutOfBounds = shipLength + row > board.length;
-          for (let i = row; i < shipLength + row; i++) {
-            const targetedCell = document.querySelector(
-              `[data-cord-x="${col}"][data-cord-y="${i}"]`
-            );
-
-            // check if cell is inside board
-            if (targetedCell) {
-              targetedCells.push(targetedCell);
-              // Check if collides with other ship
-              if (targetedCell.classList.contains('ship')) isColliding = true;
-            }
-          }
-        }
-
-        // Check if ship is inside bounds and add appropriate classes
-        targetedCells.forEach((targetedCell) => {
-          if (isShipOutOfBounds || isColliding) {
-            targetedCell.classList.add('out-of-bounds');
-          } else {
-            targetedCell.classList.add('in-bounds');
-          }
-        });
-      });
-
-      dropZone.addEventListener('dragleave', (event) => {
-        // Remove the "out-of-bounds" class when the cursor leaves the cell
-        targetedCells.forEach((targetedCell) =>
-          targetedCell.classList.remove('out-of-bounds', 'in-bounds')
-        );
-      });
-
-      dropZone.addEventListener('drop', (event) => {
-        event.preventDefault();
-
-        // Does nothing when elements other than ships are dragged
-        if (!currentDraggedShip) {
-        }
-        // Check if drop is valid
-        else if (isColliding || isShipOutOfBounds) {
-          // HANDLE WHEN SHIP COLLIDES OR IS OUT OF BOUNDS
-          showNotification(`Invalid ship placement.`, 800);
-        } else {
-          // HANDLE WHEN SHIP IS PLACED CORRECTLY
-          targetedCells.forEach((targetedCell) => {
-            targetedCell.classList.add('placed', 'ship');
-          });
-
-          // Remove placed ship HTMLElement
-          const shipId = currentDraggedShip.id;
-          const shipElement = document.getElementById(`${shipId}`);
-          const shipLength = currentDraggedShip.length;
-
-          // place ship on players gameboard
-          player.placeShip(shipLength, col, row, rotation);
-          player2.placeShip(shipLength, col, row, rotation);
-
-          shipElement.remove();
-
-          createResetButton();
-          if (isShipContainerEmpty()) createPlayButton();
-
-          // TODO fix issue where you can drag previous ship
-          // by dragging random area into board
-          currentDraggedShip = null;
-        }
-
-        targetedCells.forEach((targetedCell) =>
-          targetedCell.classList.remove('out-of-bounds', 'in-bounds')
-        );
-
-        // INSIDE THE DROPZONES TRY TO MAKE SETUP MORE MODULAR, START PLACING
-        // SHIPS BASED ON THE SHIPS DRAGGED AND DROPPED, AND THEN PLAY A GAME
-      });
+      // HandleDrop function needs player to place ship on drop;
+      const handleDropBind = handleDrop.bind({ player1, player2 });
+      dropZone.addEventListener('drop', handleDropBind);
     }
     boardContainer.appendChild(rowHTML);
+  }
+}
+
+function handleDragOver(event) {
+  event.preventDefault(); // Allow drop
+
+  // Extract row and column information from the drop target
+  const { coordX, coordY } = event.target.dataset;
+  const col = Number(coordX);
+  const row = Number(coordY);
+
+  // Checks if draggable element is valid for dropping
+  const shipLength = currentDraggedShip ? currentDraggedShip.length : null;
+
+  targetedCells = [];
+  isColliding = false;
+
+  if (rotation === 'horizontal') {
+    // Check horizontal bounds and collect targeted cells;
+    isShipOutOfBounds = shipLength + col > boardSize;
+    for (let i = col; i < shipLength + col; i++) {
+      const targetedCell = document.querySelector(
+        `[data-coord-x="${i}"][data-coord-y="${row}"]`
+      );
+
+      // check if cell is inside board
+      isColliding = areShipsColliding(targetedCell);
+    }
+  } else if (rotation === 'vertical') {
+    // Check vertical bounds and collect targeted cells
+    isShipOutOfBounds = shipLength + row > boardSize;
+    for (let i = row; i < shipLength + row; i++) {
+      const targetedCell = document.querySelector(
+        `[data-coord-x="${col}"][data-coord-y="${i}"]`
+      );
+      isColliding = areShipsColliding(targetedCell);
+    }
+  }
+
+  // Check if ship is inside bounds and add appropriate classes
+  targetedCells.forEach((targetedCell) => {
+    if (isShipOutOfBounds || isColliding) {
+      targetedCell.classList.add('out-of-bounds');
+    } else {
+      targetedCell.classList.add('in-bounds');
+    }
+  });
+}
+
+function handleDragLeave(event) {
+  // Remove styling when elements dragged out of the cell
+  targetedCells.forEach((targetedCell) =>
+    targetedCell.classList.remove('out-of-bounds', 'in-bounds')
+  );
+}
+
+// Function to handle ship placement on the game board
+function handleDrop(event) {
+  event.preventDefault();
+
+  // Extract row and column information from the drop target
+  const { coordX, coordY } = event.target.dataset;
+  const col = Number(coordX);
+  const row = Number(coordY);
+
+  // Does nothing when elements other than ships are dragged
+  if (!currentDraggedShip) {
+  }
+  // Check if drop is valid
+  else if (isColliding || isShipOutOfBounds) {
+    // Handle wrongly placed ships
+    showNotification(`Invalid ship placement.`, 800);
+  } else {
+    // Add proper styling for correctly placed ships
+    targetedCells.forEach((targetedCell) => {
+      targetedCell.classList.add('placed', 'ship');
+    });
+
+    // Place ship on players gameboard
+    const shipLength = currentDraggedShip.length;
+    this.player1.placeShip(shipLength, col, row, rotation);
+    this.player2.placeShip(shipLength, col, row, rotation);
+
+    // Remove placed ship HTMLElement
+    removeCurrentlyDroppedShip();
+
+    // Create reset button and play button if needed
+    createResetButton();
+    if (isShipContainerEmpty()) createPlayButton();
+  }
+
+  // Remove indicating styling
+  targetedCells.forEach((targetedCell) =>
+    targetedCell.classList.remove('out-of-bounds', 'in-bounds')
+  );
+}
+
+function removeCurrentlyDroppedShip() {
+  const shipId = currentDraggedShip.id;
+  const shipElement = document.getElementById(`${shipId}`);
+  shipElement.remove();
+  currentDraggedShip = null;
+}
+
+function areShipsColliding(targetedCell) {
+  if (targetedCell) {
+    targetedCells.push(targetedCell);
+    // Check if collides with other ship
+    if (targetedCell.classList.contains('ship')) return true;
   }
 }
 
@@ -157,6 +177,7 @@ function createPlayButton() {
   playButton.addEventListener('click', () => {
     const playEvent = new Event('startGame');
     document.dispatchEvent(playEvent);
+    resetShipOrientation();
   });
   const buttonsContainer = document.getElementById('buttons-container');
   buttonsContainer.appendChild(playButton);
@@ -169,20 +190,29 @@ function createResetButton() {
   resetButton.addEventListener('click', () => {
     const resetEvent = new Event('resetGame');
     document.dispatchEvent(resetEvent);
+    resetShipOrientation();
   });
   const buttonsContainer = document.getElementById('buttons-container');
   buttonsContainer.innerHTML = '';
   buttonsContainer.appendChild(resetButton);
 }
 
+// RESET SHIP ORIENTATION TO HORIZONTAL!
+function resetShipOrientation() {
+  rotation = 'horizontal';
+  if (shipPositionDisplay.classList.contains('vertical'))
+    shipPositionDisplay.classList.remove('vertical');
+  shipPositionDisplay.innerText = `Ship orientation: ${rotation}`;
+}
+
 function createShips() {
   const ships = [];
-  // const carrier = Ship(5);
-  // const battleship = Ship(4);
-  // const cruiser = Ship(3);
-  // const submarine = Ship(3);
+  const carrier = Ship(5);
+  const battleship = Ship(4);
+  const cruiser = Ship(3);
+  const submarine = Ship(3);
   const destroyer = Ship(2);
-  ships.push(destroyer);
+  ships.push(carrier, battleship, cruiser, submarine, destroyer);
   return ships;
 }
 

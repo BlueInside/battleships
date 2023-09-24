@@ -191,7 +191,7 @@ p {
 
 /* Style for ship length display */
 .draggable-ship::after {
-  content: 'Ship ' attr(data-length) ' cells'; /* Display ship length */
+  content: 'Ship ' 'size ' attr(data-length); /* Display ship length */
   font-size: 14px;
   display: block;
   margin-top: 5px;
