@@ -40,38 +40,48 @@ function createDropZones(player) {
         event.preventDefault(); // Allow drop
 
         // Checks if draggable element is valid for dropping
-        const currentXCoord = col;
-        const currentYCoord = row;
-
         const shipLength = currentDraggedShip
           ? currentDraggedShip.length
           : null;
         let isShipOutOfBounds = null;
+        let isColliding = false;
         targetedCells = [];
 
         if (rotation === 'horizontal') {
           // Check horizontal bounds and collect targeted cells;
-          isShipOutOfBounds = shipLength + currentXCoord > board.length;
-          for (let i = currentXCoord; i < shipLength + currentXCoord; i++) {
+          isShipOutOfBounds = shipLength + col > board.length;
+          for (let i = col; i < shipLength + col; i++) {
             const targetedCell = document.querySelector(
-              `[data-cord-x="${i}"][data-cord-y="${currentYCoord}"]`
+              `[data-cord-x="${i}"][data-cord-y="${row}"]`
             );
-            if (targetedCell) targetedCells.push(targetedCell);
+
+            // check if cell is inside board
+            if (targetedCell) {
+              targetedCells.push(targetedCell);
+              // Check if collides with other ship
+              if (targetedCell.classList.contains('ship')) isColliding = true;
+            }
           }
         } else if (rotation === 'vertical') {
           // Check vertical bounds and collect targeted cells
-          isShipOutOfBounds = shipLength + currentYCoord > board.length;
-          for (let i = currentYCoord; i < shipLength + currentYCoord; i++) {
+          isShipOutOfBounds = shipLength + row > board.length;
+          for (let i = row; i < shipLength + row; i++) {
             const targetedCell = document.querySelector(
-              `[data-cord-x="${currentXCoord}"][data-cord-y="${i}"]`
+              `[data-cord-x="${col}"][data-cord-y="${i}"]`
             );
-            if (targetedCell) targetedCells.push(targetedCell);
+
+            // check if cell is inside board
+            if (targetedCell) {
+              targetedCells.push(targetedCell);
+              // Check if collides with other ship
+              if (targetedCell.classList.contains('ship')) isColliding = true;
+            }
           }
         }
 
         // Check if ship is inside bounds and add appropriate classes
         targetedCells.forEach((targetedCell) => {
-          if (isShipOutOfBounds) {
+          if (isShipOutOfBounds || isColliding) {
             targetedCell.classList.add('out-of-bounds');
           } else {
             targetedCell.classList.add('in-bounds');
@@ -90,15 +100,16 @@ function createDropZones(player) {
         event.preventDefault();
 
         //place ships on the board different color
-        targetedCells.forEach((targetedCell) =>
-          targetedCell.classList.add('placed')
-        );
+        targetedCells.forEach((targetedCell) => {
+          targetedCell.classList.add('placed', 'ship');
+          targetedCell.classList.remove('out-of-bounds', 'in-bounds');
+        });
 
         const shipId = event.dataTransfer.getData('text/plain');
         console.log(shipId);
         // const shipElement = document.getElementById(shipId);
-        // console.log(event.target.dataset.currentXCoord);
-        // console.log(event.target.dataset.currentYCoord);
+        // console.log(event.target.dataset.col);
+        // console.log(event.target.dataset.row);
 
         // Check if the drop is valid (e.g., ship fits in the zone)
         // if (isValidDrop(shipElement, dropZone)) {
