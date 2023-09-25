@@ -1,6 +1,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #222831;
+  background-image: url('../images/bgShip.jpg');
+  background-size: cover;
   color: #eeeeee;
   margin: 0;
   padding: 0;
@@ -12,11 +13,11 @@ body {
 
 #initial-screen {
   text-align: center;
-  background-color: #393e46;
+  background-color: #393e46e8;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  width: 80%;
+  width: 60%;
   height: 45vh;
   display: flex;
   flex-direction: column;
@@ -102,10 +103,14 @@ p {
 .cell {
   width: 30px;
   height: 30px;
-  border: 0.5px solid #393e46;
+  background-color: #385b75bf;
+  border: 0.5px solid #000000;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#player2-board-display div.cell {
+  cursor: pointer;
 }
 .ship {
   background-color: #00adb5;
@@ -145,6 +150,7 @@ p {
   display: flex;
   padding: 15px;
   border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   width: 95%;
   height: 60vh;
@@ -202,7 +208,7 @@ p {
 .drop-zone {
   width: 40px;
   height: 40px;
-  border: 2px dashed #393e46;
+  border: 2px dashed #eeeeee;
   margin: 5px;
 }
 
@@ -256,6 +262,26 @@ p {
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
+}
+.fleet-indicator {
+  background-color: #37474f;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the "Your Fleet" indicator */
+.your-fleet {
+  background-color: #1976d2; /* Customize the color as needed */
+}
+
+/* Style for the "Enemy Fleet" indicator */
+.enemy-fleet {
+  background-color: #d32f2f; /* Customize the color as needed */
 }
 
 .hidden,
