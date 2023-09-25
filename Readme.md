@@ -7,6 +7,7 @@ Welcome to the Battleship Game project! In this project, I had the opportunity t
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
+- [Play](#play)
 - [Usage](#usage)
 - [License](#license)
 - [Credits](#credits)
@@ -42,7 +43,8 @@ ESLint is configured to maintain code quality and enforce coding standards, help
 - ESLint
 - HTML
 - CSS
-
+## Play 
+You can try the game [here](https://blueinside.github.io/battleships/)
 ## Usage
 
 Gameplay: Follow the on-screen instructions to play Battleship. Your mission is to sink your opponent's fleet of ships before they sink yours.
