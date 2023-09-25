@@ -4,12 +4,12 @@ Welcome to the Battleship Game project! In this project, I had the opportunity t
 
 # Table of Contents
 
-[Introduction](#introduction)
-[Features](#features)
-[Technologies Used](#technologies-used)
-[Usage](#usage)
-[License](#license)
-[Credits](#credits)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Usage](#usage)
+- [License](#license)
+- [Credits](#credits)
 
 ## Introduction
 
