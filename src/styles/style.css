@@ -284,6 +284,54 @@ p {
   background-color: #d32f2f; /* Customize the color as needed */
 }
 
+#legend {
+  display: flex;
+  position: fixed;
+  top: 10px;
+  width: 40%;
+  justify-content: space-around;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Add a semi-transparent background */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+}
+
+#missed-shoot,
+#accurate-shoot,
+#own-ship {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Make the color indicators circular */
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#missed-shoot {
+  background-color: #ffffff;
+}
+
+#accurate-shoot {
+  background-color: red;
+}
+
+#own-ship {
+  background-color: #00adb5;
+}
+
+span {
+  margin-top: 5px;
+  display: inline-block;
+  margin-right: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
 .hidden,
 #game-over-modal.hidden,
 #display.hidden {
