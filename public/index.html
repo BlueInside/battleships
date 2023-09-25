@@ -20,10 +20,10 @@
         <h2>Instructions</h2>
         <p>
           Welcome to BattleShips! Your mission is to sink your opponent's fleet
-          of ships before they sink yours. Click on the grid to take your shots
-          and try to hit your enemy's ships. To place your ships on the board,
-          click and drag or use the arrow keys to move them and press 'R' to
-          rotate. When you're ready, click "Play" to start the game.
+          of ships before they sink yours. Click on the grid to take your shots.
+          You can move your ships by clicking and dragging them and rotate them
+          by clicking the 'Rotate' button at the top of the board. When you're
+          ready, click 'Play' to start the game.
         </p>
       </div>
       <button id="play-button">Play</button>
@@ -32,8 +32,10 @@
       <div id="notification-container" class="hidden">
         <p id="notification-text"></p>
       </div>
-      <div id="display">
+      <div id="display" class="hidden">
+        <div class="fleet-indicator your-fleet">Your fleet</div>
         <div id="player1-board-display"></div>
+        <div class="fleet-indicator enemy-fleet">Enemy fleet</div>
         <div id="player2-board-display"></div>
       </div>
 
