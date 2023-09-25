@@ -79,7 +79,7 @@ function handleDragOver(event) {
       );
 
       // check if cell is inside board
-      isColliding = areShipsColliding(targetedCell);
+      areShipsColliding(targetedCell);
     }
   } else if (rotation === 'vertical') {
     // Check vertical bounds and collect targeted cells
@@ -88,7 +88,7 @@ function handleDragOver(event) {
       const targetedCell = document.querySelector(
         `[data-coord-x="${col}"][data-coord-y="${i}"]`
       );
-      isColliding = areShipsColliding(targetedCell);
+      areShipsColliding(targetedCell);
     }
   }
 
@@ -134,7 +134,6 @@ function handleDrop(event) {
     // Place ship on players gameboard
     const shipLength = currentDraggedShip.length;
     this.player1.placeShip(shipLength, col, row, rotation);
-    this.player2.placeShip(shipLength, col, row, rotation);
 
     // Remove placed ship HTMLElement
     removeCurrentlyDroppedShip();
@@ -161,7 +160,7 @@ function areShipsColliding(targetedCell) {
   if (targetedCell) {
     targetedCells.push(targetedCell);
     // Check if collides with other ship
-    if (targetedCell.classList.contains('ship')) return true;
+    if (targetedCell.classList.contains('ship')) isColliding = true;
   }
 }
 

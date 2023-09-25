@@ -1,16 +1,6 @@
 const containsArray = require('./utility/containsArray');
 
-function initializeGame(player1, player2) {
-  // Place ships for player1
-
-  // Place ships for player2
-  player2.placeShip(5, 4, 7, 'horizontal');
-  player2.placeShip(4, 5, 4, 'horizontal');
-  player2.placeShip(3, 1, 6, 'horizontal');
-  player2.placeShip(2, 4, 8, 'horizontal');
-  player2.placeShip(3, 3, 1, 'vertical');
-  player2.placeShip(2, 7, 1, 'vertical');
-}
+function initializeGame(player1, player2) {}
 
 function renderPlayerBoards(player1, player2) {
   const player1BoardElement = document.getElementById('player1-board-display');
@@ -24,7 +14,7 @@ function renderPlayerBoards(player1, player2) {
   let displayShips = true;
   player1BoardElement.appendChild(generateBoardHTML(player1, displayShips));
   player2BoardElement.appendChild(
-    generateBoardHTML(player2, (displayShips = false))
+    generateBoardHTML(player2, (displayShips = true)) // Shows/hides enemy ships
   );
 }
 
