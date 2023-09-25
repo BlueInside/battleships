@@ -1,4 +1,5 @@
 import './styles/style.css';
+
 const Game = require('./game.js');
 
 const playAgainBtn = document.getElementById('play-again-button');
@@ -20,6 +21,8 @@ playAgainBtn.addEventListener('click', () => {
 
 document.addEventListener('resetGame', () => {
   Game.startSetup();
+  const display = document.getElementById('display');
+  display.classList.add('hidden');
 });
 
 document.addEventListener('startGame', () => {
@@ -28,6 +31,9 @@ document.addEventListener('startGame', () => {
 
   const boardDisplay = document.getElementById('display');
   boardDisplay.classList.remove('hidden');
+
+  const display = document.getElementById('display');
+  display.classList.remove('hidden');
 
   Game.initializeGame();
 });
