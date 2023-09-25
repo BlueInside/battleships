@@ -14,7 +14,7 @@ function renderPlayerBoards(player1, player2) {
   let displayShips = true;
   player1BoardElement.appendChild(generateBoardHTML(player1, displayShips));
   player2BoardElement.appendChild(
-    generateBoardHTML(player2, (displayShips = true)) // Shows/hides enemy ships
+    generateBoardHTML(player2, (displayShips = false)) // Shows/hides enemy ships
   );
 }
 
