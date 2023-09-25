@@ -17,13 +17,17 @@ The Battleship Game project is a web-based implementation of the classic Battles
 
 ## Features
 
-Test-Driven Development (TDD): This project emphasizes the practice of writing tests before implementing features, ensuring code reliability and maintainability.
+### Test-Driven Development (TDD): 
+This project emphasizes the practice of writing tests before implementing features, ensuring code reliability and maintainability.
 
-Webpack: Webpack is used for bundling and managing project assets, making it easier to organize and optimize the code.
+### Webpack: 
+Webpack is used for bundling and managing project assets, making it easier to organize and optimize the code.
 
-Babel Transpiler: Babel is utilized to transpile modern JavaScript code into a compatible version that can run in various browsers.
+### Babel Transpiler: 
+Babel is utilized to transpile modern JavaScript code into a compatible version that can run in various browsers.
 
-ESLint: ESLint is configured to maintain code quality and enforce coding standards, helping ensure consistency across the project.
+### ESLint: 
+ESLint is configured to maintain code quality and enforce coding standards, helping ensure consistency across the project.
 
 ## Technologies Used
 
