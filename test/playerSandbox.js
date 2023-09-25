@@ -109,19 +109,53 @@ const Player = () => {
   return { placeShip, getHitRecords, receiveAttack, shoot, getBoard, cpuMove };
 };
 
-const player1 = Player();
 const player2 = Player();
-const shootRecords = player2.getHitRecords();
-player2.getHitRecords().length;
-player1.cpuMove(player2);
-console.log(player2.getHitRecords().length);
-player1.cpuMove(player2);
-console.log(player2.getHitRecords().length);
-player1.cpuMove(player2);
-player1.cpuMove(player2);
-player1.cpuMove(player2);
-for (let index = 0; index < 59; index++) {
-  player1.cpuMove(player2);
+function placeCPUShips() {
+  const shipLengths = [5, 4, 3, 3, 2];
+  const boardSize = player2.getBoard().length;
+
+  shipLengths.forEach((shipLength) => {
+    while (true) {
+      const startX = Math.floor(Math.random() * boardSize);
+      const startY = Math.floor(Math.random() * boardSize);
+      const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+
+      if (
+        direction === 'horizontal' &&
+        startX + shipLength < boardSize &&
+        !shipsOverlap(shipLength, startX, startY, direction)
+      ) {
+        player2.placeShip(shipLength, startX, startY, direction);
+        break;
+      } else if (
+        direction === 'vertical' &&
+        startY + shipLength < boardSize &&
+        !shipsOverlap(shipLength, startX, startY, direction)
+      ) {
+        player2.placeShip(shipLength, startX, startY, direction);
+        break;
+      }
+    }
+  });
 }
-console.log(player2.getHitRecords().length);
-console.log(player2.getHitRecords());
+
+function shipsOverlap(shipLength, startX, startY, direction) {
+  const board = player2.getBoard();
+
+  if (direction === 'horizontal') {
+    for (let i = startX; i < startX + shipLength; i++) {
+      const currentCell = board[startY][i];
+      if (currentCell !== null) return true;
+    }
+  } else if (direction === 'vertical') {
+    for (let i = startY; i < startY + shipLength; i++) {
+      const currentCell = board[i][startX];
+      if (currentCell !== null) return true;
+    }
+  }
+  return false;
+}
+console.log(player2.getBoard())
+placeCPUShips();
+console.log(player2.getBoard())
+
