@@ -1,7 +1,6 @@
 // Import the CSS styles
 import './styles/style.css';
 
-// Import the Game module
 const Game = require('./game.js');
 
 // Get references to the play again and play buttons
